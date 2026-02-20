@@ -1,0 +1,3402 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Dein Weg – Bildung & Chancen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Unbounded:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN: "Stadtplan & Reisepass" – Urban Editorial
+       Warm, energetisch, übersichtlich für 6.-8. Klasse
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --sun:    #F5C518;   /* Signalgelb */
+      --coral:  #E8553E;   /* Orangerot / Akzent */
+      --ink:    #1B2354;   /* Tiefes Indigo */
+      --paper:  #FDF9F0;   /* Cremeweiß Hintergrund */
+      --card:   #FFFFFF;
+      --muted:  #6B7494;
+      --text:   #1B2354;
+      --border: rgba(27,35,84,.1);
+      --ok:     #2EAF72;
+      --danger: #E8553E;
+      --warn:   #E8973E;
+      --shadow: 0 4px 24px rgba(27,35,84,.10);
+      --radius: 20px;
+      --sans: 'Nunito', system-ui, sans-serif;
+      --display: 'Unbounded', sans-serif;
+    }
+    /* Dark Mode */
+    body.dark {
+      --paper:  #13172B;
+      --card:   #1C2140;
+      --ink:    #1B2354;   /* keep ink dark! used for card borders/backgrounds */
+      --text:   #E8EEFF;
+      --muted:  #8A93C0;
+      --border: rgba(232,238,255,.12);
+      --shadow: 0 4px 24px rgba(0,0,0,.4);
+      --sun:    #F5C518;
+      --coral:  #FF6B4A;
+      --ok:     #3DD48A;
+      --warn:   #FFAA5A;
+      background: #13172B;
+      color: #E8EEFF;
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; margin:0; padding:0; }
+    html, body { min-height:100%; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 15px;
+      transition: background .3s, color .3s;
+    }
+
+    /* ── Hintergrund Textur ── */
+    body::before {
+      content:'';
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(245,197,24,.12) 0%, transparent 50%),
+        radial-gradient(circle at 85% 80%, rgba(232,85,62,.08) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231B2354' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    body > * { position: relative; z-index:1; }
+
+    /* ── HEADER ── */
+    header {
+      background: #1B2354;
+      color: #fff;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 20px rgba(27,35,84,.35);
+    }
+    body.dark header {
+      background: #0d1128;
+      box-shadow: 0 2px 20px rgba(0,0,0,.5);
+    }
+    .header-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 42px; height: 42px;
+      background: var(--sun);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(245,197,24,.4);
+    }
+    .brand-text h1 {
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -.2px;
+      line-height: 1.2;
+    }
+    .brand-text p {
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      margin-top: 1px;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .smallbtn {
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.85);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .08s;
+      min-height: 34px;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .smallbtn:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+    .smallbtn:active { transform: scale(.97); }
+    .smallbtn.ok { border-color: rgba(46,175,114,.5); color: #5AE6A0; }
+    .smallbtn.ok:hover { background: rgba(46,175,114,.15); }
+    .smallbtn.danger { border-color: rgba(232,85,62,.5); color: #FF8069; }
+    .smallbtn.danger:hover { background: rgba(232,85,62,.15); }
+
+    /* ── Profil-Pills (unter Header) ── */
+    .pillbar-wrap {
+      background: var(--card);
+      border-bottom: 1.5px solid var(--border);
+      padding: 0 20px;
+      box-shadow: 0 2px 8px rgba(27,35,84,.06);
+    }
+    .pillbar {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 8px 0;
+    }
+    .pillbar::-webkit-scrollbar { display: none; }
+    .pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 16px;
+      border-right: 1.5px solid var(--border);
+      min-width: fit-content;
+      flex-shrink: 0;
+    }
+    .pill:last-child { border-right: none; }
+    .pill .pill-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .pill b {
+      color: var(--text);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    /* ── Progress Journey Bar ── */
+    .journey-wrap {
+      background: var(--card);
+      border-bottom: 1.5px solid var(--border);
+      padding: 12px 20px 14px;
+    }
+    .journey-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+    .journey-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .progress-bar-wrap {
+      position: relative;
+    }
+    .progress-track {
+      height: 8px;
+      background: rgba(27,35,84,.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sun), var(--coral));
+      border-radius: 999px;
+      transition: width .5s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-dots {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+    .progress-dot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .progress-dot .dot-circle {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(27,35,84,.15);
+      border: 2px solid transparent;
+      transition: all .3s;
+    }
+    .progress-dot.done .dot-circle { background: var(--sun); border-color: var(--sun); }
+    .progress-dot.active .dot-circle {
+      background: var(--coral);
+      border-color: var(--coral);
+      box-shadow: 0 0 0 4px rgba(232,85,62,.2);
+      transform: scale(1.3);
+    }
+    .progress-dot .dot-label {
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .progress-dot.active .dot-label { color: var(--coral); }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      main { grid-template-columns: 1fr; }
+      .journey-wrap { padding: 10px 14px 12px; }
+    }
+
+    /* ── SIDEBAR – Profil & Stats ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── Card Grundstil ── */
+    .card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 12px 16px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card-header-title {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-header-title::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--sun);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .card-body { padding: 16px; }
+
+    /* ── Alters-Badge ── */
+    .age-badge {
+      background: var(--sun);
+      color: var(--ink);
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* ── Profil-Meta ── */
+    .meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .meta .kv {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: rgba(27,35,84,.04);
+      border-radius: 10px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+    }
+    body.dark .meta .kv { background: rgba(255,255,255,.04); }
+    .meta .kv span:first-child { color: var(--muted); }
+    .meta .kv span:last-child { color: var(--text); font-weight: 700; }
+
+    /* ── Noten-Box ── */
+    .grade-box {
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--ink), #2B3872);
+      color: #fff;
+      text-align: center;
+    }
+    body.dark .grade-box { background: linear-gradient(135deg, #2B3872, #1B2354); }
+    .grade-label { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; opacity: .65; font-weight: 800; }
+    .grade-val {
+      font-family: var(--display);
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 4px 0 2px;
+      color: var(--sun);
+    }
+    .grade-desc { font-size: 12px; opacity: .75; }
+
+    /* ── Stats ── */
+    .stats { display: flex; flex-direction: column; gap: 8px; }
+    .stat {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: rgba(27,35,84,.03);
+    }
+    body.dark .stat { background: rgba(255,255,255,.03); }
+    .stat .row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 7px;
+      color: var(--muted);
+    }
+    .stat .row .val { color: var(--text); font-weight: 800; }
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(27,35,84,.1);
+      overflow: hidden;
+    }
+    body.dark .bar { background: rgba(255,255,255,.1); }
+    .bar > div {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sun), var(--coral));
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+    .bar.danger > div { background: linear-gradient(90deg, var(--coral), #C0392B); }
+
+    /* ── Log ── */
+    .log-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      font-weight: 900;
+      margin: 14px 0 8px;
+      padding-top: 14px;
+      border-top: 1.5px solid var(--border);
+    }
+    .log { display: flex; flex-direction: column; gap: 6px; }
+    .log .entry {
+      padding: 9px 11px;
+      border-radius: 10px;
+      background: rgba(27,35,84,.04);
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    body.dark .log .entry { background: rgba(255,255,255,.04); }
+    .log .entry b { color: var(--text); display: block; font-weight: 800; margin-bottom: 2px; font-size: 12px; }
+    .log .entry { color: var(--muted); }
+
+    /* ── SCENE CARD ── */
+    .scene-card {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: sceneFade .35s ease both;
+    }
+    @keyframes sceneFade {
+      from { opacity:0; transform: translateY(12px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .scene-phase-bar {
+      height: 5px;
+      background: linear-gradient(90deg, var(--sun), var(--coral));
+    }
+    .scene-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .scene-phase-tag {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(245,197,24,.15);
+      color: #B8910A;
+      border: 1.5px solid rgba(245,197,24,.3);
+    }
+    body.dark .scene-phase-tag { background: rgba(245,197,24,.12); color: var(--sun); }
+    .scene-body { padding: 22px 20px; }
+    .scene-title {
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      margin: 0 0 14px;
+      line-height: 1.25;
+      letter-spacing: -.3px;
+    }
+    .scene-text {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      margin: 0 0 18px;
+    }
+
+    /* ── Gymnasium Chance ── */
+    .gym-chance-box {
+      background: linear-gradient(135deg, rgba(27,35,84,.06), rgba(27,35,84,.02));
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    body.dark .gym-chance-box { background: rgba(255,255,255,.05); }
+    .chance-title {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .gymchance-bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(27,35,84,.1);
+      overflow: hidden;
+    }
+    body.dark .gymchance-bar { background: rgba(255,255,255,.1); }
+    .gymchance-bar > div {
+      height: 100%;
+      background: linear-gradient(90deg, var(--ok), #38D9A9);
+      border-radius: 999px;
+      transition: width .5s ease;
+    }
+
+    /* ── Choices ── */
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .choices.single-col { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .choices { grid-template-columns: 1fr; } }
+    .choices .btn-full { grid-column: 1 / -1; }
+
+    .btn {
+      border: 2px solid var(--border);
+      background: rgba(27,35,84,.03);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 14px;
+      font-size: 14px;
+      font-family: var(--sans);
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, transform .08s, box-shadow .15s;
+      min-height: 58px;
+      user-select: none;
+      display: block;
+      width: 100%;
+      line-height: 1.45;
+      position: relative;
+    }
+    body.dark .btn { background: rgba(255,255,255,.04); }
+    .btn::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 0;
+      background: var(--sun);
+      border-radius: 0 3px 3px 0;
+      transition: height .2s;
+    }
+    .btn:hover::before, .btn:focus::before { height: 60%; }
+    .btn:hover, .btn:focus {
+      background: rgba(245,197,24,.07);
+      border-color: rgba(245,197,24,.4);
+      box-shadow: 0 4px 16px rgba(245,197,24,.12);
+      outline: none;
+      transform: translateY(-1px);
+    }
+    .btn:focus:not(:focus-visible) { outline: none; }
+    .btn:focus-visible { outline: 2px solid var(--sun); outline-offset: 2px; }
+
+    /* Zurück-Button */
+    .btn.btn-back {
+      background: rgba(27,35,84,.04);
+      border-color: var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+    }
+    body.dark .btn.btn-back { background: rgba(255,255,255,.04); }
+    .btn.btn-back:hover {
+      background: rgba(27,35,84,.08);
+      border-color: rgba(27,35,84,.3);
+      color: var(--text);
+      box-shadow: none;
+    }
+    body.dark .btn.btn-back:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); }
+    .btn.btn-back::before { display: none; }
+
+    /* Neu-Spielen Button – sekundär, kein Glow */
+    .btn.btn-neu {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .btn.btn-neu:hover {
+      background: rgba(27,35,84,.05);
+      border-color: rgba(27,35,84,.25);
+      color: var(--text);
+      box-shadow: none;
+      transform: none;
+    }
+    body.dark .btn.btn-neu { color: var(--muted); }
+    body.dark .btn.btn-neu:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.2); }
+    .btn.btn-neu::before { display: none; }
+    .btn:active { transform: scale(.98) translateY(0); }
+    .btn[disabled] {
+      opacity: .45;
+      cursor: not-allowed;
+      background: rgba(27,35,84,.02);
+      border-color: var(--border);
+    }
+    .btn[disabled]::before { display: none; }
+    .btn .tag {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-weight: 600;
+      font-style: italic;
+    }
+    .btn .lock {
+      color: var(--warn);
+      font-size: 12px;
+      margin-top: 5px;
+      display: block;
+      font-weight: 700;
+    }
+
+    /* "Weiter" button – speziell */
+    .btn.btn-continue {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+      text-align: center;
+      font-family: var(--display);
+      letter-spacing: .2px;
+    }
+    body.dark .btn.btn-continue { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); }
+    .btn.btn-continue:hover {
+      background: #2B3872;
+      border-color: #2B3872;
+      box-shadow: 0 6px 20px rgba(27,35,84,.25);
+      transform: translateY(-2px);
+    }
+    .btn.btn-continue::before { display: none; }
+
+    /* ── Reflexions-Hinweis ── */
+    .hint {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(245,197,24,.1), rgba(232,85,62,.06));
+      border: 1.5px solid rgba(245,197,24,.25);
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    body.dark .hint { background: rgba(245,197,24,.08); border-color: rgba(245,197,24,.2); }
+    .hint::before { content: "💡 "; }
+
+    /* ── Achievement Toast ── */
+    .ach-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--ink);
+      border: 2px solid var(--sun);
+      border-radius: 16px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--sun);
+      z-index: 1000;
+      box-shadow: 0 8px 30px rgba(27,35,84,.25);
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+      opacity: 0;
+      white-space: nowrap;
+      pointer-events: none;
+      max-width: 90vw;
+      font-family: var(--sans);
+    }
+    .ach-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ── Event-Overlay ── */
+    .event-overlay {
+      position: fixed; inset: 0;
+      background: rgba(10,14,40,.75);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 500; padding: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      animation: fadeIn .2s ease;
+    }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    .event-card {
+      background: var(--card);
+      border-radius: 26px;
+      padding: 0;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 32px 80px rgba(27,35,84,.45);
+      border: 2px solid var(--border);
+      overflow: hidden;
+      animation: eventPop .35s cubic-bezier(.34,1.46,.64,1);
+    }
+    body.dark .event-card { border-color: rgba(245,197,24,.25); }
+    @keyframes eventPop {
+      from { transform: scale(.85) translateY(20px); opacity: 0; }
+      to   { transform: scale(1)   translateY(0);    opacity: 1; }
+    }
+
+    /* Farbiger Kopfbereich je nach Ereignistyp */
+    .event-card-head {
+      padding: 24px 24px 20px;
+      background: linear-gradient(135deg, #1B2354, #2B3872);
+      position: relative;
+      overflow: hidden;
+    }
+    body.dark .event-card-head { background: linear-gradient(135deg, #0d1030, #1B2354); }
+    .event-card-head::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(245,197,24,.18), transparent 60%);
+      pointer-events: none;
+    }
+    .event-card .ev-icon {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.3));
+      position: relative; z-index: 1;
+    }
+    .event-card .ev-title {
+      font-family: var(--display); font-size: 20px; font-weight: 900;
+      margin-bottom: 0; color: #fff;
+      line-height: 1.2; position: relative; z-index: 1;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+
+    /* Body */
+    .event-card-body { padding: 20px 24px 24px; }
+    .event-card .ev-text {
+      color: var(--muted); font-size: 14px; line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .event-card .ev-effect {
+      background: rgba(245,197,24,.1);
+      border: 1.5px solid rgba(245,197,24,.3);
+      border-radius: 12px; padding: 11px 14px;
+      font-size: 13px; font-weight: 800;
+      color: var(--text); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .event-card .ev-effect::before { content: '⚡'; flex-shrink: 0; }
+    .event-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #1B2354, #2B3872);
+      color: #fff;
+      border: none; border-radius: 14px;
+      font-family: var(--display); font-size: 14px; font-weight: 900;
+      cursor: pointer; transition: transform .12s, box-shadow .15s;
+      min-height: 52px; letter-spacing: .2px;
+      box-shadow: 0 4px 16px rgba(27,35,84,.3);
+    }
+    body.dark .event-btn {
+      background: linear-gradient(135deg, rgba(245,197,24,.15), rgba(245,197,24,.08));
+      color: var(--sun); border: 1px solid rgba(245,197,24,.3);
+    }
+    .event-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27,35,84,.4); }
+    body.dark .event-btn:hover { box-shadow: 0 8px 24px rgba(245,197,24,.15); }
+    .event-btn:active { transform: scale(.98); }
+
+    /* ── Fortschritts-Balken Extra-CSS (progress dots von render) ── */
+    .progress-bar-wrap { margin-top: 0; }
+
+    /* ── Footer ── */
+    .footer-note {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── OVERLAYS: Profile Card, WhatIf, QR, Help ── */
+    .profile-overlay, .wwiw-overlay, .qr-overlay, .help-overlay {
+      position: fixed; inset: 0;
+      background: rgba(27,35,84,.7);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 900; padding: 16px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    @keyframes popIn {
+      from { transform: scale(.88); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    /* Profilkarte */
+    .profile-card {
+      background: var(--card);
+      border-radius: 28px;
+      padding: 28px 24px;
+      max-width: 500px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(27,35,84,.35);
+      border: 2px solid var(--border);
+      animation: popIn .35s cubic-bezier(.34,1.46,.64,1);
+    }
+    .pc-stamp {
+      width: 60px; height: 60px;
+      background: var(--sun);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 16px;
+      box-shadow: 0 8px 24px rgba(245,197,24,.35);
+    }
+    .pc-title {
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 900;
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .pc-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .pc-headline {
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 14px;
+      padding: 10px 16px;
+      background: rgba(27,35,84,.05);
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+    }
+    body.dark .pc-headline { background: rgba(255,255,255,.05); }
+    .pc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .pc-item {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: rgba(27,35,84,.03);
+    }
+    body.dark .pc-item { background: rgba(255,255,255,.04); }
+    .pc-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--muted);
+      font-weight: 900;
+      margin-bottom: 3px;
+    }
+    .pc-val { font-size: 13px; font-weight: 800; color: var(--text); }
+    .pc-engagement {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 2px solid var(--border);
+      margin-bottom: 16px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .pc-engagement.hoch    { border-color: rgba(46,175,114,.4); background: rgba(46,175,114,.08); color: var(--ok); }
+    .pc-engagement.mittel  { border-color: rgba(245,197,24,.4); background: rgba(245,197,24,.08); color: #B8910A; }
+    body.dark .pc-engagement.mittel { color: var(--sun); }
+    .pc-engagement.niedrig { border-color: rgba(232,151,62,.4); background: rgba(232,151,62,.08); color: var(--warn); }
+    .pc-engagement.vernachlaessigt { border-color: rgba(232,85,62,.4); background: rgba(232,85,62,.08); color: var(--danger); }
+    .pc-start-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: background .15s, transform .1s, box-shadow .15s;
+      min-height: 54px;
+      box-shadow: 0 6px 20px rgba(27,35,84,.2);
+    }
+    .pc-start-btn:hover { background: #2B3872; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(27,35,84,.25); }
+    .pc-start-btn:active { transform: scale(.98); }
+
+    /* WhatIf Card */
+    .wwiw-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 26px 22px;
+      max-width: 460px; width: 100%;
+      max-height: 88vh; overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(27,35,84,.3);
+      border: 2px solid var(--border);
+      animation: popIn .3s cubic-bezier(.34,1.46,.64,1);
+    }
+    .wwiw-card h3 { font-family: var(--display); font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+    .wwiw-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+    .wwiw-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .wwiw-row label { color: var(--muted); font-size: 13px; font-weight: 700; min-width: 140px; }
+    .wwiw-row select {
+      flex: 1; padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--card); color: var(--text);
+      font-family: var(--sans); font-size: 13px; font-weight: 700;
+      cursor: pointer;
+    }
+    .wwiw-result {
+      background: rgba(27,35,84,.04);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 14px; margin: 16px 0;
+    }
+    body.dark .wwiw-result { background: rgba(255,255,255,.04); }
+    .wwiw-score-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .wwiw-score-row b { color: var(--text); font-weight: 800; }
+    .wwiw-btn {
+      width: 100%; padding: 14px; margin-top: 4px;
+      background: var(--ink); color: #fff;
+      border: none; border-radius: 14px;
+      font-family: var(--display); font-size: 14px; font-weight: 900;
+      cursor: pointer; min-height: 50px;
+      transition: background .15s, transform .1s;
+    }
+    .wwiw-btn:hover { background: #2B3872; transform: translateY(-1px); }
+    .wwiw-close {
+      width: 100%; padding: 11px; margin-top: 8px;
+      background: transparent; color: var(--muted);
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-family: var(--sans); font-size: 13px; font-weight: 700;
+      cursor: pointer; min-height: 42px;
+    }
+    .wwiw-close:hover { background: rgba(27,35,84,.05); }
+
+    /* QR / Ergebnis-Card */
+    .qr-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 26px 22px;
+      max-width: 500px; width: 100%;
+      max-height: 88vh; overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(27,35,84,.3);
+      border: 2px solid var(--border);
+      animation: popIn .3s cubic-bezier(.34,1.46,.64,1);
+    }
+    .qr-card h3 { font-family: var(--display); font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+    .qr-sub { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .qr-summary { font-size: 13px; line-height: 1.8; color: var(--muted); }
+    .qr-close {
+      width: 100%; padding: 13px; margin-top: 14px;
+      background: var(--ink); color: #fff;
+      border: none; border-radius: 14px;
+      font-family: var(--display); font-size: 14px; font-weight: 900;
+      cursor: pointer; min-height: 50px;
+      transition: background .15s, transform .1s;
+    }
+    .qr-close:hover { background: #2B3872; transform: translateY(-1px); }
+
+    /* Help Card */
+    .help-card {
+      background: var(--card);
+      border-radius: 24px;
+      padding: 28px 24px;
+      max-width: 520px; width: 100%;
+      max-height: 88vh; overflow-y: auto;
+      box-shadow: 0 24px 60px rgba(27,35,84,.3);
+      border: 2px solid var(--border);
+      animation: popIn .3s cubic-bezier(.34,1.46,.64,1);
+    }
+    .help-card h3 { font-family: var(--display); font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+    .help-card .help-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .help-section { margin-bottom: 18px; }
+    .help-section h4 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+      color: var(--muted); font-weight: 900;
+      margin: 0 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .help-section p { font-size: 14px; line-height: 1.65; color: var(--text); margin: 0 0 8px; }
+    .help-stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .help-stat {
+      background: rgba(27,35,84,.04);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12px; flex: 1; min-width: 100px;
+    }
+    body.dark .help-stat { background: rgba(255,255,255,.04); }
+    .help-stat .hs-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .help-stat .hs-name { font-weight: 800; color: var(--text); display: block; font-size: 13px; }
+    .help-stat .hs-desc { color: var(--muted); font-size: 11px; }
+    .help-close {
+      width: 100%; padding: 14px;
+      background: var(--ink); color: #fff;
+      border: none; border-radius: 14px;
+      font-family: var(--display); font-size: 14px; font-weight: 900;
+      cursor: pointer; min-height: 50px; margin-top: 4px;
+      transition: background .15s, transform .1s;
+    }
+    .help-close:hover { background: #2B3872; transform: translateY(-1px); }
+
+    /* ── Scene fade animation ── */
+    .scene-fade { animation: sceneFade .35s ease both; }
+
+    /* ── Mobile Anpassungen ── */
+    @media (max-width: 480px) {
+      .brand-text h1 { font-size: 13px; }
+      .smallbtn { padding: 6px 9px; font-size: 11px; }
+      main { padding: 14px 12px 32px; gap: 14px; }
+      .scene-title { font-size: 17px; }
+      .pc-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="dark">
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">🗺️</div>
+        <div class="brand-text">
+          <h1>DEIN WEG</h1>
+          <p>Bildung & Chancen in Deutschland · 6 bis 18 Jahre</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="smallbtn" id="btnTheme">☀️ Hell</button>
+        <button class="smallbtn" id="btnHelp">❓ Anleitung</button>
+        <button class="smallbtn" id="btnWhatIf" style="display:none">🔮 Was wäre wenn?</button>
+        <button class="smallbtn" id="btnQR" style="display:none">📲 Teilen</button>
+        <button class="smallbtn ok" id="btnNew">↺ Neu</button>
+        <button class="smallbtn danger" id="btnReset">✕ Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROFIL-PILLS -->
+  <div class="pillbar-wrap">
+    <div class="pillbar" id="pillbar"></div>
+  </div>
+
+  <!-- JOURNEY / PROGRESS -->
+  <div class="journey-wrap">
+    <div class="journey-inner">
+      <div class="journey-label">🗺️ Dein Lebensweg</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-track" id="progressTrack">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-dots" id="progressDots"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- Profil-Info -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-header-title">Dein Profil</span>
+          <span class="age-badge" id="ageLabel">6 J.</span>
+        </div>
+        <div class="card-body">
+          <div class="meta" id="meta"></div>
+          <div style="height:12px"></div>
+          <div class="grade-box" id="gradeBox">
+            <div class="grade-label">📝 Notenschnitt</div>
+            <div class="grade-val" id="gradeVal">–</div>
+            <div class="grade-desc" id="gradeDesc">Noch keine Noten</div>
+          </div>
+          <div style="height:12px"></div>
+          <div class="stats" id="stats"></div>
+          <div class="log-title">📋 Ereignisse</div>
+          <div class="log" id="log"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE CARD -->
+    <div class="scene-card" id="sceneCard">
+      <div class="scene-phase-bar"></div>
+      <div class="scene-header">
+        <span class="scene-phase-tag" id="phaseLabel">–</span>
+        <span style="font-size:12px; color:var(--muted); font-weight:700;" id="scenePhaseRight"></span>
+      </div>
+      <div class="scene-body">
+        <h3 class="scene-title" id="sceneTitle"></h3>
+        <p class="scene-text" id="sceneText"></p>
+        <div id="gymchanceContainer"></div>
+        <div class="choices" id="choices"></div>
+        <p class="hint" id="reflection" style="display:none"></p>
+      </div>
+    </div>
+  </main>
+
+  <div class="footer-note">
+    📘 Dieses Spiel zeigt, wie unterschiedliche Startbedingungen den Bildungsweg beeinflussen. Es ist kein Urteil über Einzelpersonen – aber ein Blick auf das System.
+  </div>
+
+  <div class="ach-toast" id="achToast"></div>
+
+<script>
+/**
+ * Prototyp-Logik (ohne Libraries).
+ * Ziel: strukturelle Ungleichheiten erfahrbar machen, ohne platt zu moralisieren.
+ */
+
+// ---------- Utilities ----------
+const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const nowISO = () => new Date().toISOString();
+
+function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
+
+// ---------- Game State ----------
+const DEFAULT_STATE = () => ({
+  id: crypto?.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2),
+  createdAt: nowISO(),
+  age: 6,
+  phase: "Grundschule",
+  profile: {
+    region: null,
+    wohnlage: null,
+    family: null,
+    income: null,
+    languageHome: null,
+    elternBildung: null,
+  },
+  stats: {
+    geld: 50,          // 0..100 (Proxy für finanzielle Mittel)
+    bildung: 40,       // 0..100
+    stress: 20,        // 0..100 (hoch = schlecht)
+    sprache: 50,       // 0..100 (Deutschkompetenz)
+    sozial: 40         // 0..100 (Netzwerke / Zugehörigkeit)
+  },
+  flags: {
+    hatLaptop: false,
+    kenntLehrkraft: false,
+    hatFoerderung: false,
+    warAufKlassenfahrt: null,
+    uebungDeutschAG: false,
+    elternAkademiker: false,
+    gymnasiumErreicht: false,
+    noteGrundschule: null,
+    noteSek1: null,
+    zufallsereignisGesehen: false,
+    elternEngagement: "mittel",  // "hoch" | "mittel" | "niedrig" | "vernachlaessigt"
+  },
+  log: [],
+  currentScene: "intro"
+});
+
+let state = null;
+
+// ---------- Startbedingungen (Deutschland) ----------
+const START_PROFILES = {
+  region: ["Großstadt", "Mittelstadt", "Ländlicher Raum"],
+  wohnlage: ["gute Lage", "durchschnittliche Lage", "benachteiligte Lage"],
+  family: ["2 Elternteile", "alleinerziehend", "Patchwork"],
+  income: ["hoch", "mittel", "niedrig"],
+  languageHome: ["Deutsch", "Deutsch & andere Sprache", "vorwiegend andere Sprache"],
+  elternBildung: ["Akademiker (Uni/FH)", "Berufsausbildung", "ohne Abschluss"]
+};
+
+function rollStartState(){
+  const s = DEFAULT_STATE();
+  s.profile.region = rnd(START_PROFILES.region);
+  s.profile.family = rnd(START_PROFILES.family);
+  s.profile.income = rnd(START_PROFILES.income);
+  s.profile.languageHome = rnd(START_PROFILES.languageHome);
+  s.profile.elternBildung = rnd(START_PROFILES.elternBildung);
+
+  // Wohnlage hängt stark vom Einkommen ab (recherchiert: Segregation in DE)
+  // Hohe Einkommen → fast immer gute Lage; niedrige → häufig benachteiligte Lage
+  {
+    const r = Math.random();
+    if (s.profile.income === "hoch") {
+      // 60% gute Lage, 38% durchschnittlich, 2% benachteiligt
+      s.profile.wohnlage = r < 0.60 ? "gute Lage" : r < 0.98 ? "durchschnittliche Lage" : "benachteiligte Lage";
+    } else if (s.profile.income === "mittel") {
+      // 20% gute Lage, 60% durchschnittlich, 20% benachteiligt
+      s.profile.wohnlage = r < 0.20 ? "gute Lage" : r < 0.80 ? "durchschnittliche Lage" : "benachteiligte Lage";
+    } else {
+      // 5% gute Lage, 35% durchschnittlich, 60% benachteiligt
+      s.profile.wohnlage = r < 0.05 ? "gute Lage" : r < 0.40 ? "durchschnittliche Lage" : "benachteiligte Lage";
+    }
+  }
+
+  // Einkommen → finanzielle Mittel
+  if (s.profile.income === "hoch") s.stats.geld = 80;
+  if (s.profile.income === "mittel") s.stats.geld = 50;
+  if (s.profile.income === "niedrig") s.stats.geld = 22;
+
+  // Sprache zu Hause → Deutschkenntnisse
+  if (s.profile.languageHome === "Deutsch") s.stats.sprache = 65;
+  if (s.profile.languageHome === "Deutsch & andere Sprache") s.stats.sprache = 55;
+  if (s.profile.languageHome === "vorwiegend andere Sprache") s.stats.sprache = 38;
+
+  // Wohnlage → Sozial & Stress
+  if (s.profile.wohnlage === "gute Lage") { s.stats.sozial += 8; s.stats.stress -= 5; }
+  if (s.profile.wohnlage === "benachteiligte Lage") { s.stats.sozial -= 7; s.stats.stress += 7; }
+
+  // Elternbildung: beeinflusst Bildungskapital stark
+  if (s.profile.elternBildung === "Akademiker (Uni/FH)") {
+    s.stats.bildung += 12; s.stats.sozial += 10;
+    s.flags.elternAkademiker = true;
+  }
+  if (s.profile.elternBildung === "Berufsausbildung") {
+    s.stats.bildung += 4; s.stats.sozial += 3;
+    s.flags.elternAkademiker = false;
+  }
+  if (s.profile.elternBildung === "ohne Abschluss") {
+    s.stats.bildung -= 5; s.stats.stress += 5;
+    s.flags.elternAkademiker = false;
+  }
+
+  // Bildungs- und Teilhabepaket (BuT): NUR für Haushalte mit niedrigem Einkommen
+  // (SGB II / Wohngeld / Kinderzuschlag-Bezug)
+  // Zugänglichkeit variiert nach Region (Bürokratie, Bekanntheit)
+  if (s.profile.income === "niedrig") {
+    const r = Math.random();
+    if (s.profile.region === "Großstadt") s.flags.hatFoerderung = r < 0.55;      // gut vernetzt, aber auch mehr Bürokratie
+    else if (s.profile.region === "Mittelstadt") s.flags.hatFoerderung = r < 0.42;
+    else s.flags.hatFoerderung = r < 0.28; // Ländlicher Raum: Förderung kaum bekannt/erreichbar
+  } else {
+    s.flags.hatFoerderung = false; // Mittel und Hoch: kein Anspruch auf BuT
+  }
+
+  // Eltern-Engagement: unabhängig von Bildung/Geld, aber beeinflusst davon
+  {
+    const r = Math.random();
+    if (s.profile.elternBildung === "Akademiker (Uni/FH)") {
+      if (r < 0.30) s.flags.elternEngagement = "hoch";
+      else if (r < 0.70) s.flags.elternEngagement = "mittel";
+      else if (r < 0.95) s.flags.elternEngagement = "niedrig";
+      else s.flags.elternEngagement = "vernachlaessigt";
+    } else if (s.profile.elternBildung === "Berufsausbildung") {
+      if (r < 0.25) s.flags.elternEngagement = "hoch";
+      else if (r < 0.70) s.flags.elternEngagement = "mittel";
+      else if (r < 0.92) s.flags.elternEngagement = "niedrig";
+      else s.flags.elternEngagement = "vernachlaessigt";
+    } else {
+      if (r < 0.12) s.flags.elternEngagement = "hoch";
+      else if (r < 0.47) s.flags.elternEngagement = "mittel";
+      else if (r < 0.79) s.flags.elternEngagement = "niedrig";
+      else s.flags.elternEngagement = "vernachlaessigt";
+    }
+    // Alleinerziehend: erhöht Vernachlässigungs-Risiko leicht (Überlastung)
+    if (s.profile.family === "alleinerziehend" && s.flags.elternEngagement === "mittel" && Math.random() < 0.25) {
+      s.flags.elternEngagement = "niedrig";
+    }
+  }
+
+  normalizeStats(s);
+  pushLog(s, "Spielstart", "Deine Ausgangslage wurde zufällig bestimmt – genau wie im echten Leben.");
+  return s;
+}
+
+// ---------- Notenschnitt berechnen ----------
+function computeGrade(s) {
+  // Realistisch: Deutscher Durchschnitt liegt bei ca. 2.5–3.0
+  // Bildung 40 (Start) → Note ~2.8 (realistischer Mittelpunkt)
+  // Bildung 70+ → Note ~1.8 (sehr gut, Gymnasium-typisch)
+  // Bildung 25– → Note ~3.8 (Hauptschule-typisch)
+  // Formel: Note = 4.5 - (bildung / 35) + stress*0.015 - (sprache-50)*0.01
+  const bildungsFaktor = s.stats.bildung / 35;          // 40→1.14, 70→2.0, 25→0.71
+  const stressMalus    = s.stats.stress * 0.015;         // stress 50 → +0.75
+  const sprachBonus    = (s.stats.sprache - 50) * 0.01; // sprache 65 → +0.15
+  let raw = 4.5 - bildungsFaktor + stressMalus - sprachBonus;
+  raw = Math.max(1.0, Math.min(5.5, raw));
+  return Math.round(raw * 10) / 10;
+}
+
+function gradeDescription(g) {
+  if (g <= 1.5) return "Sehr gut 🌟";
+  if (g <= 2.5) return "Gut 👍";
+  if (g <= 3.5) return "Befriedigend 😊";
+  if (g <= 4.5) return "Ausreichend 😐";
+  if (g <= 5.5) return "Mangelhaft 😟";
+  return "Ungenügend 😔";
+}
+
+// ---------- Zufallsereignisse ----------
+const RANDOM_EVENTS = [
+  {
+    id: "krankheit",
+    icon: "🤒",
+    title: "Du wirst krank!",
+    text: "Du fehlst zwei Wochen in der Schule. Den Stoff musst du alleine aufholen – manche haben dabei Hilfe, andere nicht.",
+    effects: (s) => { s.stats.bildung -= 5; s.stats.stress += 8; },
+    effectLabels: [
+      { text: "📚 Bildung –5", kind: "neg" },
+      { text: "😰 Stress +8", kind: "neg" }
+    ]
+  },
+  {
+    id: "umzug",
+    icon: "📦",
+    title: "Ihr zieht um!",
+    text: "Deine Familie muss in einen anderen Stadtteil ziehen. Neue Schule, neue Mitschüler – das ist aufwändig und anstrengend.",
+    effects: (s) => { s.stats.sozial -= 8; s.stats.stress += 6; s.stats.bildung -= 3; },
+    effectLabels: [
+      { text: "🤝 Sozial –8", kind: "neg" },
+      { text: "😰 Stress +6", kind: "neg" },
+      { text: "📚 Bildung –3", kind: "neg" }
+    ]
+  },
+  {
+    id: "foerderprogramm",
+    icon: "🎉",
+    title: "Glück: Förderprogramm!",
+    text: "Deine Schule nimmt an einem besonderen Förderprogramm teil. Du bekommst extra Unterstützung – kostenlos!",
+    effects: (s) => { s.stats.bildung += 8; s.flags.hatFoerderung = true; },
+    effectLabels: [
+      { text: "📚 Bildung +8", kind: "pos" },
+      { text: "✅ Förderung verfügbar", kind: "pos" }
+    ]
+  },
+  {
+    id: "schulstreik",
+    icon: "✊",
+    title: "Schulstreik – du machst mit!",
+    text: "In deiner Klasse gibt es Streit um bessere Ausstattung. Du engagierst dich. Das stärkt dich – aber kostet auch Zeit.",
+    effects: (s) => { s.stats.sozial += 6; s.stats.bildung -= 2; s.stats.stress += 3; },
+    effectLabels: [
+      { text: "🤝 Sozial +6", kind: "pos" },
+      { text: "📚 Bildung –2", kind: "neg" },
+      { text: "😰 Stress +3", kind: "neg" }
+    ]
+  },
+  {
+    id: "internetausfall",
+    icon: "📡",
+    title: "Kein Internet zuhause!",
+    text: "Euer Internetvertrag wurde gekündigt. Für mehrere Wochen habt ihr kein WLAN – Hausaufgaben und Online-Unterricht sind kaum möglich.",
+    effects: (s) => { s.stats.bildung -= 6; s.stats.stress += 5; },
+    effectLabels: [
+      { text: "📚 Bildung –6", kind: "neg" },
+      { text: "😰 Stress +5", kind: "neg" }
+    ]
+  },
+  {
+    id: "stipendium",
+    icon: "🏆",
+    title: "Du gewinnst ein kleines Stipendium!",
+    text: "Eine Stiftung unterstützt Kinder mit besonderen Leistungen. Du bekommst einen kleinen Betrag für Lernmaterialien.",
+    effects: (s) => { s.stats.geld += 12; s.stats.bildung += 4; },
+    effectLabels: [
+      { text: "💰 Geld +12", kind: "pos" },
+      { text: "📚 Bildung +4", kind: "pos" }
+    ]
+  },
+  {
+    id: "elterntrennung",
+    icon: "💔",
+    title: "Schwierige Zeit zuhause",
+    text: "Bei dir zuhause ist gerade viel los – die Eltern trennen sich. Das ist emotional anstrengend und lenkt vom Lernen ab.",
+    effects: (s) => { s.stats.stress += 10; s.stats.sozial -= 4; s.stats.bildung -= 3; },
+    effectLabels: [
+      { text: "😰 Stress +10", kind: "neg" },
+      { text: "🤝 Sozial –4", kind: "neg" },
+      { text: "📚 Bildung –3", kind: "neg" }
+    ]
+  },
+  {
+    id: "buechereiausweis",
+    icon: "📚",
+    title: "Du entdeckst die Bücherei!",
+    text: "Deine Lehrerin zeigt euch die Stadtbücherei. Du holst dir einen Ausweis und leihst regelmäßig Bücher aus – kostenlos!",
+    effects: (s) => { s.stats.bildung += 6; s.stats.stress -= 3; },
+    effectLabels: [
+      { text: "📚 Bildung +6", kind: "pos" },
+      { text: "😰 Stress –3", kind: "pos" }
+    ]
+  }
+];
+
+let pendingEvent = null;
+
+function rollRandomEvent(s) {
+  // ~15% Chance auf ein Zufallsereignis
+  if (Math.random() > 0.15) return null;
+  const pool = RANDOM_EVENTS.filter(e => !s.log.some(l => l.title === e.title));
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ---------- Scenes ----------
+const SCENES = {
+  intro: {
+    phase: "Grundschule",
+    title: "🏫 Erster Schultag – 1. Klasse (6 Jahre)",
+    text: "Du kommst in die 1. Klasse. Alle sind aufgeregt! Aber nicht alle Kinder starten mit den gleichen Möglichkeiten.\n\nDein Zuhause, deine Familie und dein Wohnort beeinflussen deinen Schulweg – schon von Anfang an.",
+    reflection: "Merke: Gerechtigkeit bedeutet, dass alle echte Chancen bekommen – auch wenn das unterschiedliche Unterstützung bedeutet.",
+    choices: [
+      { label: "🎒 Los geht's – Grundschulalltag beginnt!", next: "klassenfahrt" }
+    ]
+  },
+
+  klassenfahrt: {
+    phase: "Grundschule",
+    title: "🚌 Klassenfahrt (250 Euro)",
+    text: "Die Klasse plant eine Klassenfahrt! Drei Tage im Schullandheim – alle freuen sich. Aber die Fahrt kostet 250 Euro.\n\nDeine Eltern müssen entscheiden, was möglich ist.",
+    reflection: "Frage: Ist es fair, dass manche Kinder nicht mitfahren können, weil das Geld fehlt?",
+    choices: [
+      {
+        label: "✅ Eltern zahlen – du fährst mit",
+        next: "hausaufgaben",
+        requires: (s) => s.profile.income === "hoch" || s.stats.geld >= 45,
+        lockReason: "⛔ Nicht genug Geld für die Fahrt.",
+        effects: (s) => {
+          // Hohe Einkommen: kein spürbarer Unterschied im Budget
+          const kostet = s.profile.income === "hoch" ? 5 : 30;
+          s.stats.geld -= kostet; s.stats.sozial += 10; s.stats.stress -= 3;
+          s.flags.warAufKlassenfahrt = true;
+          pushLog(s, "🚌 Klassenfahrt", "Du fährst mit – tolle Erfahrungen, neue Freundschaften.");
+        },
+        note: "Für Familien mit hohem Einkommen ist das eine Kleinigkeit. Für andere kann es die ganze Haushaltskasse sprengen."
+      },
+      {
+        label: "📄 Hilfe beantragen (Bildung & Teilhabe)",
+        next: "hausaufgaben",
+        requires: (s) => s.profile.income === "niedrig",
+        lockReason: "⛔ Das Bildungs- und Teilhabepaket (BuT) ist nur für Haushalte mit geringem Einkommen (SGB II etc.) zugänglich.",
+        effects: (s) => {
+          if (s.flags.hatFoerderung) {
+            s.flags.warAufKlassenfahrt = true;
+            s.stats.sozial += 8; s.stats.stress += 3;
+            pushLog(s, "Klassenfahrt", "Der Antrag wurde bewilligt! Du fährst mit – aber der Papierkram war anstrengend.");
+          } else {
+            s.flags.warAufKlassenfahrt = false;
+            s.stats.stress += 6; s.stats.sozial -= 3;
+            pushLog(s, "Klassenfahrt", "Der Antrag kam zu spät, die Familie wusste nicht wie – du fährst nicht mit.");
+          }
+        },
+        note: "Der Staat kann helfen – aber Formulare ausfüllen ist nicht für alle einfach. Viele berechtigte Familien nutzen das BuT nicht."
+      },
+      {
+        label: "❌ Nicht mitfahren – kein Geld",
+        next: "hausaufgaben",
+        effects: { sozial: -8, stress: +5, flag: ["warAufKlassenfahrt", false] },
+        note: "Du bleibst zuhause. Das tut weh – und man verpasst Dinge, über die alle reden."
+      }
+    ]
+  },
+
+  hausaufgaben: {
+    phase: "Grundschule",
+    title: "📖 Hausaufgaben – wer hilft dir?",
+    text: "Du sollst für die Schule üben und ein Arbeitsblatt machen. Manche Kinder haben zuhause jemanden, der hilft. Andere nicht.\n\nAuch Ruhe, Platz und Zeit zählen – nicht nur Fleiß.",
+    reflection: "Gute Noten hängen also stark vom Zuhause ab – nicht nur vom Fleiß des Kindes!",
+    choices: [
+      {
+        label: "👨‍👩‍👧 Eltern helfen regelmäßig",
+        next: "deutsch_ag",
+        requires: (s) => s.flags.elternEngagement === "hoch" &&
+          (s.profile.languageHome !== "vorwiegend andere Sprache" || s.stats.sprache >= 55),
+        lockReason: "⛔ Deine Eltern haben dafür gerade nicht die Zeit, Energie oder Sprachkenntnisse.",
+        effects: { bildung: +10, stress: -3, sozial: +2 },
+        note: "Regelmäßige Unterstützung wirkt wie ein Booster fürs Lernen."
+      },
+      {
+        label: "💰 Nachhilfe bezahlen",
+        next: "deutsch_ag",
+        requires: (s) => s.stats.geld >= 35,
+        lockReason: "⛔ Nicht genug Geld für Nachhilfe.",
+        effects: { geld: -15, bildung: +12, stress: -2 },
+        note: "Wer zahlen kann, kann Schwächen schneller ausgleichen – ein echter Vorteil."
+      },
+      {
+        label: "🤔 Alleine versuchen",
+        next: "deutsch_ag",
+        effects: (s) => {
+          const success = 0.35 + (s.stats.sprache/200) + (s.stats.bildung/250);
+          if (Math.random() < success){
+            s.stats.bildung += 7; s.stats.stress += 1;
+            pushLog(s, "Hausaufgaben", "Du schaffst es! Aber es war wirklich mühsam.");
+          } else {
+            s.stats.bildung += 2; s.stats.stress += 6;
+            pushLog(s, "Hausaufgaben", "Du kommst nicht weiter. Das ist frustrierend.");
+          }
+        },
+        note: "Manchmal klappt es alleine – aber es kostet viel mehr Kraft."
+      },
+      {
+        label: "😓 Aufgaben bleiben liegen",
+        next: "deutsch_ag",
+        requires: (s) => s.flags.elternEngagement === "vernachlaessigt" || s.flags.elternEngagement === "niedrig",
+        lockReason: "⛔ Du hast genug Unterstützung – die Aufgaben können nicht einfach liegen bleiben.",
+        effects: { bildung: -4, stress: +8, sozial: -2 },
+        note: "Zuhause ist niemand da, der darauf achtet. Das passiert – aber die Lücken wachsen."
+      }
+    ]
+  },
+
+  deutsch_ag: {
+    phase: "Grundschule",
+    title: "🗣️ Deutsch-Förder-AG – mitmachen oder nicht?",
+    text: "Die Schule bietet nachmittags eine Förder-AG an. Du könntest dein Deutsch verbessern. Aber: Die AG ist nach dem Unterricht – und zuhause warten vielleicht andere Aufgaben.",
+    reflection: "Förderangebote sind gut – aber nur wenn man auch wirklich hingehen kann!",
+    choices: [
+      {
+        label: "✅ Mitmachen bei der Förder-AG",
+        next: "alltag_handy",
+        effects: (s) => {
+          s.flags.uebungDeutschAG = true;
+          s.stats.sprache += 10; s.stats.stress += 2; s.stats.bildung += 4;
+          pushLog(s, "Förder-AG", "Du gehst regelmäßig hin. Dein Deutsch wird deutlich besser!");
+        },
+        note: "Förderung hilft – wenn man Zeit und Möglichkeit hat, sie zu nutzen."
+      },
+      {
+        label: "❌ Keine Zeit / andere Pflichten",
+        next: "alltag_handy",
+        effects: { stress: +2, sozial: +1 },
+        note: "Manchmal ist der Alltag einfach zu voll. Das ist keine Faulheit."
+      }
+    ]
+  },
+
+  uebergang: {
+    phase: "Übergang",
+    title: "🏫 Welche Schule kommt nach der Grundschule? (10 Jahre)",
+    text: "Nach der 4. Klasse wird entschieden: Gymnasium, Realschule oder Hauptschule? Noten zählen – aber auch die Eltern, Lehrer-Erwartungen und das Umfeld spielen eine große Rolle.",
+    reflection: "Studien zeigen: Kinder aus Akademiker-Familien werden mit gleichen Noten deutlich häufiger fürs Gymnasium empfohlen!",
+    choices: [
+      {
+        label: "📚 Eltern kämpfen aktiv um einen Gymnasialplatz",
+        next: "gymnasium_entscheidung",
+        requires: (s) => (s.flags.elternEngagement === "hoch" || s.flags.elternEngagement === "mittel") &&
+                         (s.stats.sozial >= 35 || s.profile.income !== "niedrig"),
+        lockReason: "⛔ Deine Eltern sind entweder nicht engagiert genug oder ihnen fehlen die Zeit, Energie und Erfahrung mit dem Schulsystem.",
+        effects: { sozial: +6, stress: +3, bildung: +3 },
+        note: "Wer weiß, wie man mit Schulen spricht, und sich auch die Zeit nimmt, hat einen echten Vorteil."
+      },
+      {
+        label: "🗣️ Du gehst selbst zur Lehrerin / zum Lehrer",
+        next: "gymnasium_entscheidung",
+        requires: (s) => s.stats.sprache >= 48,
+        lockReason: "⛔ Sprachliche Hürden machen das Gespräch sehr schwierig.",
+        effects: { sozial: +4, stress: +2, flag: ["kenntLehrkraft", true] },
+        note: "Mut und Kommunikation können viel bewegen – aber nicht alle haben diese Möglichkeit."
+      },
+      {
+        label: "😐 Ihr wartet ab, was passiert",
+        next: "gymnasium_entscheidung",
+        effects: { stress: +3, sozial: -2 },
+        note: "Passivität ist oft nicht Gleichgültigkeit – sondern Erschöpfung, Unsicherheit oder fehlendes Wissen über das System."
+      }
+    ]
+  },
+
+  gymnasium_entscheidung: {
+    phase: "Übergang",
+    title: "🎓 Gymnasium – Klappt es? (10 Jahre)",
+    gymChance: true,
+    text: "Jetzt zeigt sich, ob es mit dem Gymnasium klappt. In Deutschland spielt der familiäre Hintergrund eine riesige Rolle:\n\n📊 Laut Studien: Kinder von Akademiker-Eltern kommen mit gleichen Noten dreimal so häufig aufs Gymnasium wie Kinder ohne diesen Hintergrund.",
+    reflection: "Das nennt man soziale Ungleichheit: Es ist nicht fair – aber es ist die Realität in Deutschland.",
+    choices: [
+      {
+        label: "➡️ Weiter – Schulzuweisung annehmen",
+        next: "gymnasium_ergebnis",
+        effects: (s) => {
+          // Gymnasium-Wahrscheinlichkeit berechnen – realistischer, niedriger
+          let gymChance = 0.15; // Basis sehr niedrig (ohne Kontext kommt man kaum rein)
+          if (s.flags.elternAkademiker) gymChance += 0.28;
+          if (s.profile.income === "hoch") gymChance += 0.12;
+          if (s.profile.income === "mittel") gymChance += 0.05;
+          if (s.stats.bildung >= 65) gymChance += 0.14;
+          else if (s.stats.bildung >= 50) gymChance += 0.07;
+          if (s.flags.kenntLehrkraft) gymChance += 0.08;
+          if (s.flags.uebungDeutschAG) gymChance += 0.04;
+          if (s.stats.sprache >= 60) gymChance += 0.05;
+          // Eltern-Engagement beeinflusst die Chance stark
+          if (s.flags.elternEngagement === "hoch") gymChance += 0.12;
+          else if (s.flags.elternEngagement === "niedrig") gymChance -= 0.07;
+          else if (s.flags.elternEngagement === "vernachlaessigt") gymChance -= 0.15;
+          // Wohnlage
+          if (s.profile.wohnlage === "benachteiligte Lage") gymChance -= 0.05;
+          gymChance = Math.min(gymChance, 0.88);
+          gymChance = Math.max(gymChance, 0.04);
+          s.flags.gymnasiumErreicht = Math.random() < gymChance;
+          s.flags.lastGymChance = Math.round(gymChance * 100);
+          if (s.flags.gymnasiumErreicht) {
+            s.stats.bildung += 6; s.stats.sozial += 5;
+            pushLog(s, "Gymnasium", "Du kommst ans Gymnasium!");
+          } else {
+            s.stats.stress += 5;
+            pushLog(s, "Gymnasium", "Kein Gymnasium – du gehst auf Realschule oder Hauptschule.");
+          }
+        }
+      }
+    ]
+  },
+
+  gymnasium_ergebnis: {
+    phase: "Sek I",
+    title: "📋 Ergebnis der Schulzuweisung (10 Jahre)",
+    text: "",  // wird dynamisch gesetzt
+    reflection: "Dieses Ergebnis zeigt: Dein Einsatz zählt – aber dein familiärer Hintergrund zählt noch mehr. Das ist soziale Ungerechtigkeit.",
+    choices: [
+      { label: "➡️ Weiter: Sek I beginnt", next: "sek1_digital" }
+    ]
+  },
+
+  sek1_digital: {
+    phase: "Sek I",
+    title: "💻 Digitaler Unterricht – Gerät vorhanden? (13 Jahre)",
+    text: "Es gibt viel digitalen Unterricht. Wer ein Laptop oder Tablet hat, kann viel leichter lernen. Aber nicht alle haben ein Gerät.",
+    reflection: "Ein Computer ist heute genauso wichtig für die Schule wie früher ein Schulbuch!",
+    choices: [
+      {
+        label: "💻 Du hast Laptop & gutes Internet",
+        next: "praktikum",
+        requires: (s) => s.stats.geld >= 50 || s.flags.hatLaptop === true,
+        lockReason: "⛔ Kein Gerät vorhanden und nicht genug Geld für einen Kauf.",
+        effects: (s) => {
+          s.flags.hatLaptop = true;
+          s.stats.bildung += 8; s.stats.stress -= 2;
+          pushLog(s, "Digital", "Mit Laptop läuft der Unterricht viel besser!");
+        },
+        note: "Wer Zugang hat, lernt effektiver – ein großer Vorteil."
+      },
+      {
+        label: "📦 Schulgerät ausleihen (falls verfügbar)",
+        next: "praktikum",
+        effects: (s) => {
+          const p = 0.35 + (s.flags.hatFoerderung ? 0.20 : 0) + (s.profile.region === "Großstadt" ? 0.10 : 0);
+          if (Math.random() < p){
+            s.flags.hatLaptop = true;
+            s.stats.bildung += 6; s.stats.stress += 1;
+            pushLog(s, "Digital", "Du bekommst ein Leihgerät – super, auch wenn es manchmal kompliziert ist.");
+          } else {
+            s.flags.hatLaptop = false;
+            s.stats.bildung -= 2; s.stats.stress += 7;
+            pushLog(s, "Digital", "Kein Gerät verfügbar. Du verpasst oft wichtige Inhalte.");
+          }
+        },
+        note: "Ob ein Gerät verfügbar ist, hängt von der Schule und dem Wohnort ab."
+      },
+      {
+        label: "📱 Nur Handy – irgendwie geht's",
+        next: "praktikum",
+        effects: { bildung: -1, stress: +6, sozial: -1 },
+        note: "Auf dem Handy zu lernen ist viel schwieriger – aber manchmal die einzige Möglichkeit."
+      }
+    ]
+  },
+
+  praktikum: {
+    phase: "Sek I",
+    title: "🔍 Praktikumssuche (15 Jahre)",
+    text: "Du brauchst ein Schülerpraktikum. Manche finden schnell einen Platz – über Kontakte der Eltern. Andere müssen viele Bewerbungen schreiben.",
+    reflection: "Netzwerke sind unsichtbare Türöffner – wer sie hat, merkt es kaum. Wer sie nicht hat, kämpft.",
+    choices: [
+      {
+        label: "🤝 Praktikum über Bekannte der Familie",
+        next: "sek1_konsum",
+        requires: (s) => s.stats.sozial >= 55,
+        lockReason: "⛔ Keine passenden Kontakte vorhanden.",
+        effects: { sozial: +6, bildung: +4, stress: -2 },
+        note: "Kontakte sparen Zeit und erhöhen die Chancen enorm."
+      },
+      {
+        label: "✉️ Bewerbungen schreiben (mit Hilfe)",
+        next: "sek1_konsum",
+        requires: (s) => s.stats.sprache >= 50,
+        lockReason: "⛔ Bewerbungen auf Deutsch schreiben ist ohne Hilfe sehr schwierig.",
+        effects: { bildung: +3, stress: +2, sozial: +2 },
+        note: "Bewerbungen schreiben ist eine Fähigkeit – die manche zuhause lernen, andere nicht."
+      },
+      {
+        label: "💪 Alleine versuchen, viele Absagen",
+        next: "sek1_konsum",
+        effects: (s) => {
+          const p = 0.25 + (s.stats.sprache/250) + (s.stats.bildung/300);
+          if (Math.random() < p){
+            s.stats.bildung += 4; s.stats.stress += 3; s.stats.sozial += 1;
+            pushLog(s, "Praktikum", "Du findest etwas! Aber der Weg dahin war erschöpfend.");
+          } else {
+            s.stats.bildung += 1; s.stats.stress += 8; s.stats.sozial -= 2;
+            pushLog(s, "Praktikum", "Viele Absagen. Das frustriert – obwohl du dich wirklich bemühst.");
+          }
+        },
+        note: "Absagen haben nicht immer mit Leistung zu tun."
+      }
+    ]
+  },
+
+  sek1_konsum: {
+    phase: "Sek I / Oberstufe",
+    title: "👟 Markensachen & Dazugehören (16 Jahre)",
+    text: "In deiner Klasse tragen plötzlich viele teure Sneaker, Markenjacken und die neuesten Handys. Es gibt eine unsichtbare Grenze: Wer die richtigen Sachen hat, gehört dazu – wer nicht, fällt auf.\n\nWie gehst du damit um?",
+    reflection: "Konsumzwang unter Jugendlichen ist real – er entsteht oft nicht aus Oberflächlichkeit, sondern aus dem tiefen Wunsch nach Zugehörigkeit.",
+    choices: [
+      {
+        label: "🛍️ Eltern kaufen Markensachen",
+        next: "sek1_fuehrerschein",
+        requires: (s) => s.stats.geld >= 55,
+        lockReason: "⛔ Das Geld reicht für teure Markensachen nicht.",
+        effects: { geld: -18, sozial: +7, stress: -4 },
+        note: "Zugehörigkeit erkauft – aber sie funktioniert. Zumindest kurzfristig."
+      },
+      {
+        label: "♻️ Günstige Alternativen / Second Hand",
+        next: "sek1_fuehrerschein",
+        effects: (s) => {
+          const p = 0.5 + (s.stats.sozial / 200);
+          if (Math.random() < p) {
+            s.stats.sozial += 2; s.stats.stress -= 1;
+            pushLog(s, "Konsum", "Mit Second Hand kommt man irgendwie durch – und manche finden es sogar cool.");
+          } else {
+            s.stats.sozial -= 3; s.stats.stress += 4;
+            pushLog(s, "Konsum", "Nicht alle akzeptieren günstiger Kleidung – du wirst manchmal ausgeschlossen.");
+          }
+        },
+        note: "Manche finden das authentisch – andere machen sich lustig. Hängt stark von der Klasse ab."
+      },
+      {
+        label: "😔 Keine Markensachen – Ausgrenzung",
+        next: "sek1_fuehrerschein",
+        requires: (s) => s.stats.geld < 35 || s.flags.elternEngagement === "vernachlaessigt",
+        lockReason: "⛔ Diese Option betrifft nur Kinder mit wenig Geld oder vernachlässigenden Eltern.",
+        effects: { sozial: -8, stress: +9, bildung: -3 },
+        note: "Wenn man nie die richtigen Sachen hat, zieht man sich zurück – und fühlt sich unsichtbar."
+      },
+      {
+        label: "💬 Eigene Identität entwickeln, egal was andere sagen",
+        next: "sek1_fuehrerschein",
+        requires: (s) => s.stats.sozial >= 50 || s.stats.bildung >= 60,
+        lockReason: "⛔ Dafür fehlen gerade Selbstbewusstsein und Rückhalt.",
+        effects: { bildung: +4, stress: +3, sozial: -1 },
+        note: "Mutig – aber kostet Kraft. Man braucht ein starkes Selbstbewusstsein oder gute Freunde."
+      }
+    ]
+  },
+
+  sek1_fuehrerschein: {
+    phase: "Oberstufe",
+    title: "🚗 Führerschein & Mobilität (17–18 Jahre)",
+    text: "Mit 17 können manche den Führerschein machen – das kostet 2.000–3.000 Euro. Und zum 18. Geburtstag bekommen manche Jugendliche sogar ein eigenes Auto geschenkt.\n\nWas ist bei dir möglich?",
+    reflection: "Mobilität bedeutet Freiheit – und Freiheit ist ungleich verteilt. Wer kein Auto hat und auf dem Land wohnt, hat deutlich weniger Möglichkeiten für Jobs, Ausbildung und Freizeit.",
+    choices: [
+      {
+        label: "🎁 Auto zum 18. Geburtstag geschenkt",
+        next: "sek1_zukunft",
+        requires: (s) => s.stats.geld >= 70 && s.flags.elternEngagement !== "vernachlaessigt",
+        lockReason: "⛔ Das ist für deine Familie finanziell nicht möglich.",
+        effects: (s) => {
+          s.flags.hatFuehrerschein = true; s.flags.hatAuto = true;
+          s.stats.sozial += 10; s.stats.stress -= 6; s.stats.geld -= 5;
+          pushLog(s, "🚗 Auto!", "Zum 18. ein Auto – Freiheit und Status auf einmal.");
+        },
+        note: "In Deutschland bekommen ca. 10% der 18-Jährigen ein Auto geschenkt – fast ausschließlich aus wohlhabenden Familien."
+      },
+      {
+        label: "💳 Eltern zahlen den Führerschein",
+        next: "sek1_zukunft",
+        requires: (s) => s.stats.geld >= 45,
+        lockReason: "⛔ 2.500 Euro für den Führerschein sind gerade nicht drin.",
+        effects: (s) => {
+          s.flags.hatFuehrerschein = true;
+          s.stats.sozial += 5; s.stats.stress -= 3; s.stats.geld -= 25;
+          pushLog(s, "🚗 Führerschein", "Führerschein geschafft – du bist mobiler, aber noch kein Auto.");
+        },
+        note: "Führerschein ohne Auto: mehr Freiheit, aber du bist noch auf Bus & Bahn angewiesen."
+      },
+      {
+        label: "🚌 Kein Führerschein – ÖPNV und zu Fuß",
+        next: "sek1_zukunft",
+        effects: (s) => {
+          if (s.profile.region === "Ländlicher Raum") {
+            s.stats.stress += 8; s.stats.sozial -= 5; s.stats.bildung -= 2;
+            pushLog(s, "🚌 Kein Führerschein", "Auf dem Land ohne Auto: Praktikumsplätze, Freunde, Ausbildung – alles schwerer erreichbar.");
+          } else {
+            s.stats.stress += 3; s.stats.sozial -= 2;
+            pushLog(s, "🚌 Kein Führerschein", "In der Stadt geht es ohne Auto – aber manche Chancen fallen weg.");
+          }
+        },
+        note: "In ländlichen Regionen ist kein Führerschein eine echte Einschränkung für Ausbildung und Beruf."
+      }
+    ]
+  },
+
+  sek1_zukunft: {
+    phase: "Oberstufe",
+    title: "🎯 Was kommt nach der Schule? (18 Jahre)",
+    text: "Du bist jetzt 18 Jahre alt. Die Weichen für deine Zukunft werden gestellt. Gymnasium und Abitur? Ausbildung? Oder bist du noch unsicher?\n\nWas ist für dich realistisch?",
+    reflection: "In Deutschland hängt die Berufswahl stark vom sozialen Hintergrund ab – nicht von Talent oder Wunsch. Kinder aus Akademikerfamilien studieren dreimal häufiger.",
+    choices: [
+      {
+        label: "🎓 Abitur & Studium anstreben",
+        next: "abschluss",
+        requires: (s) => s.flags.gymnasiumErreicht && s.stats.bildung >= 55,
+        lockReason: "⛔ Ohne Gymnasium ist der direkte Weg zur Uni versperrt. Der Zweite Bildungsweg ist möglich – aber lang.",
+        effects: { bildung: +8, stress: +5, sozial: +4 },
+        note: "Studieren öffnet Türen – aber kostet Zeit, Geld und Nerven."
+      },
+      {
+        label: "🔧 Ausbildung beginnen",
+        next: "abschluss",
+        effects: (s) => {
+          s.stats.geld += 10; s.stats.bildung += 5; s.stats.stress += 3;
+          pushLog(s, "Ausbildung", "Du startest eine Ausbildung – Einkommen, Praxis, Zukunft.");
+        },
+        note: "Eine gute Ausbildung ist oft unterschätzt – und kann langfristig sehr erfolgreich sein."
+      },
+      {
+        label: "❓ Noch unsicher – erstmal jobben",
+        next: "abschluss",
+        effects: (s) => {
+          s.stats.geld += 6; s.stats.stress += 2;
+          pushLog(s, "Orientierung", "Jobben und überlegen – aber die Zeit läuft.");
+        },
+        note: "Orientierung braucht Zeit – aber je länger, desto schwerer wird der Wiedereinstieg."
+      },
+      {
+        label: "😔 Kein Plan, keine Unterstützung",
+        next: "abschluss",
+        requires: (s) => s.flags.elternEngagement === "vernachlaessigt" || s.stats.bildung < 35,
+        lockReason: "⛔ Du hast genug Orientierung und Unterstützung, um Pläne zu schmieden.",
+        effects: { stress: +10, sozial: -5, bildung: -3 },
+        note: "Ohne Unterstützung und ohne Plan droht die Gefahr, ganz aus dem Bildungssystem herauszufallen."
+      }
+    ]
+  },
+
+  abschluss: {
+    phase: "Abschluss (18 Jahre)",
+    title: "📊 Rückblick mit 18 Jahren",
+    text: "Du bist jetzt 18 Jahre alt – volljährig! Das Spiel endet hier, aber dein Leben geht weiter.\n\nSchau auf deinen Weg zurück: Was hättest du gerne anders gehabt? Was war nicht in deiner Hand?",
+    reflection: "Diskutiert in der Klasse: Welche EINE Änderung im System würde am meisten helfen?",
+    choices: [
+      { label: "➡️ Ergebnis anzeigen", next: "result" },
+      { label: "↩️ Nochmal spielen", next: "__NEW__" }
+    ]
+  },
+
+  result: {
+    phase: "Ende",
+    title: "🏁 Ergebnis & Auswertung",
+    text: "Das Spiel zeigt eine ungefähre Tendenz – kein Urteil über echte Menschen!\n\nEin Mensch ist keine Zahl. Aber Zahlen zeigen Muster in einem System.",
+    reflection: "In der Realität schaffen es viele Menschen trotz schwieriger Bedingungen. Aber es sollte nicht vom Glück abhängen.",
+    choices: [
+      { label: "❓ Reflexionsfragen für die Klasse", next: "reflection_questions" },
+      { label: "🔁 Neues Spiel starten", next: "__NEW__" }
+    ]
+  },
+
+  alltag_handy: {
+    phase: "Alltag",
+    title: "📱 Dein Alltag zuhause – Handy & Technik (9 Jahre)",
+    text: "",  // dynamisch gesetzt
+    reflection: "Ob man ein Gerät hat oder nicht, entscheidet die Familie – nicht das Kind. Aber es beeinflusst, wie man am sozialen Leben und am Lernen teilnehmen kann.",
+    autoResolve: (s) => {
+      if (s.stats.geld < 25) {
+        s.stats.stress += 5; s.stats.sozial -= 4;
+        pushLog(s, "📱 Kein Handy", "Ihr habt kein Geld für ein eigenes Gerät. In der Klasse reden alle über TikTok und WhatsApp-Gruppen – du kannst nicht mitmachen.");
+        return "📵 Du hast kein eigenes Gerät. Das Geld reicht nicht.\n\nIn der Klasse gibt es Gruppen-Chats und gemeinsame Spiele – aber du kannst nicht mitmachen. Das isoliert dich, ohne dass du etwas dafür kannst.\n\n→ Soziale Kontakte –4, Stress +5";
+      } else if (s.stats.geld < 50) {
+        s.stats.sozial += 1;
+        pushLog(s, "📱 Altes Handy", "Du hast ein altes Gerät – irgendwie geht's.");
+        return "📲 Du hast ein altes Handy, das gerade noch funktioniert.\n\nManche Apps laufen nicht richtig, aber du kannst zumindest in Gruppen-Chats mitmachen.\n\n→ Kein großer Vor- oder Nachteil";
+      } else if (s.flags.elternAkademiker) {
+        s.stats.bildung += 4; s.stats.stress -= 2;
+        pushLog(s, "📱 Handy mit Regeln", "Deine Eltern setzen Grenzen beim Bildschirm – das hilft dir beim Lernen.");
+        return "📱 Du hast ein eigenes Gerät und deine Eltern achten auf sinnvolle Nutzung.\n\nSie erklären dir, welche Apps gut sind – und wann Schluss ist. Das hilft dir beim Lernen.\n\n→ Bildung +4, Stress –2";
+      } else {
+        s.stats.sozial += 3; s.stats.bildung -= 2;
+        pushLog(s, "📱 Viel Bildschirmzeit", "Kein Gerät-Limit – du spielst viel, lernst dafür weniger.");
+        return "🎮 Du hast ein Gerät ohne klare Regeln.\n\nDu spielst viel und schaust Videos – das ist entspannend, aber du lernst weniger und schläfst manchmal schlechter.\n\n→ Sozial +3, Bildung –2";
+      }
+    },
+    choices: [{ label: "➡️ Weiter", next: "alltag_ernaehrung" }]
+  },
+
+  alltag_ernaehrung: {
+    phase: "Alltag",
+    title: "🍎 Mittagessen in der Schule (9 Jahre)",
+    text: "",
+    reflection: "Wer hungrig in der Schule sitzt, kann sich schlecht konzentrieren – egal wie klug man ist. Ernährung ist auch eine soziale Frage.",
+    autoResolve: (s) => {
+      // Vernachlässigende Eltern: kein Interesse, kein Essen – aber nur wenn auch kein Geld
+      if (s.flags.elternEngagement === "vernachlaessigt" && s.profile.income !== "hoch") {
+        s.stats.stress += 8; s.stats.bildung -= 5; s.stats.sozial -= 3;
+        pushLog(s, "🥪 Kein Essen", "Niemand hat sich darum gekümmert – du gehst oft hungrig in die Schule.");
+        return "😔 Niemand hat sich darum gekümmert, dass du mittags etwas zu essen hast.\n\nDu gehst oft hungrig in die Schule. Das ist schwer zu erklären, und noch schwerer, sich dabei zu konzentrieren.\n\n→ Bildung –5, Stress +8, Sozial –3";
+      }
+      // Hohes Einkommen: Essen ist kein Problem, immer verfügbar
+      if (s.profile.income === "hoch") {
+        s.stats.bildung += 2; s.stats.stress -= 2;
+        pushLog(s, "🍽️ Warmes Mittagessen", "Deine Eltern zahlen das Schulessen – kein Problem.");
+        return "🍽️ Deine Familie zahlt das Schulessen problemlos.\n\nDu isst täglich warm und regelmäßig in der Mensa. Das ist für dich selbstverständlich – für viele Mitschüler nicht.\n\n→ Bildung +2, Stress –2";
+      }
+      // Niedriges Einkommen + Förderung: Bildungspaket
+      if (s.profile.income === "niedrig" && s.flags.hatFoerderung) {
+        s.stats.stress -= 2; s.stats.bildung += 3;
+        pushLog(s, "🍽️ Bildungspaket", "Du bekommst kostenloses Mittagessen über das Bildungspaket.");
+        return "🍽️ Du bekommst kostenloses Mittagessen über das Bildungspaket.\n\nDas klingt gut – aber der Antrag war kompliziert, und manche Kinder merken, dass du zur Gruppe gehörst, die nicht selbst zahlt. Trotzdem: Du bist satt und kannst dich konzentrieren.\n\n→ Bildung +3, Stress –2";
+      }
+      // Niedriges Einkommen OHNE Förderung
+      if (s.profile.income === "niedrig") {
+        s.stats.stress += 5; s.stats.bildung -= 4; s.stats.sozial -= 2;
+        pushLog(s, "🥪 Kein warmes Essen", "Kein Geld fürs Mittagessen und kein Bildungspaket – du hast oft Hunger.");
+        return "😔 Das Geld reicht nicht für das Schulessen und das Bildungspaket wurde nicht beantragt.\n\nManchmal bringst du ein Brot mit, manchmal gar nichts. Hunger macht es schwer, sich zu konzentrieren.\n\n→ Bildung –4, Stress +5, Sozial –2";
+      }
+      // Mittleres Einkommen: zahlen, aber spürbar
+      s.stats.geld -= 8; s.stats.bildung += 2; s.stats.stress -= 2;
+      pushLog(s, "🍽️ Mittagessen bezahlt", "Deine Eltern zahlen das Mittagessen.");
+      return "💶 Deine Eltern bezahlen das Mittagessen jeden Tag.\n\nDas kostet die Familie monatlich 60–90 Euro – aber du isst warm und regelmäßig. Das tut dir gut.\n\n→ Bildung +2, Stress –2, Geld –8";
+    },
+    choices: [{ label: "➡️ Weiter", next: "alltag_freizeit" }]
+  },
+
+  alltag_freizeit: {
+    phase: "Alltag",
+    title: "⚽ Freizeit & Hobbys (10 Jahre)",
+    text: "",  // dynamisch gesetzt
+    reflection: "Freizeitaktivitäten kosten Geld, Zeit und manchmal Transportmöglichkeiten. Kinder aus wohlhabenderen Familien nehmen dreimal häufiger an Vereinen teil.",
+    autoResolve: (s) => {
+      if (s.stats.geld >= 50) {
+        s.stats.geld -= 10; s.stats.sozial += 8; s.stats.stress -= 5; s.stats.bildung += 2;
+        pushLog(s, "⚽ Vereinsmitglied", "Du bist in einem Verein – Fußball, Musik oder Turnen.");
+        return "🏆 Du bist Mitglied in einem Verein!\n\nOb Fußball, Musikschule oder Turnen – du hast feste Trainingszeiten, neue Freundschaften und Erfolgserlebnisse außerhalb der Schule. Das stärkt dich.\n\n→ Sozial +8, Stress –5, Bildung +2, Geld –10";
+      } else if (s.profile.region === "Großstadt" || s.flags.hatFoerderung) {
+        s.stats.sozial += 4; s.stats.stress -= 2;
+        pushLog(s, "🆓 Kostenloses Angebot", "Du nimmst an einem kostenlosen Angebot teil.");
+        return "🆓 Deine Stadt hat kostenlose Angebote – eine Schul-AG oder ein Gemeindeprogramm.\n\nDu machst mit! Es ist nicht dasselbe wie ein richtiger Verein, aber du triffst andere Kinder und bewegst dich.\n\n→ Sozial +4, Stress –2";
+      } else if (s.profile.region === "Ländlicher Raum") {
+        s.stats.sozial -= 3; s.stats.stress += 3;
+        pushLog(s, "🏠 Kaum Angebote", "Auf dem Land gibt es kaum Freizeitangebote für Kinder ohne Geld.");
+        return "🏠 Auf dem Land gibt es kaum kostenlose Freizeitangebote.\n\nOhne Auto und ohne Geld kannst du nicht zu Vereinen oder Kursen. Du bleibst zuhause – hilfst im Haushalt oder schaust fern.\n\n→ Sozial –3, Stress +3";
+      } else {
+        s.stats.sozial -= 2; s.stats.stress += 2;
+        pushLog(s, "🏠 Zuhause bleiben", "Das Geld reicht nicht für Vereinsbeiträge.");
+        return "😐 Das Geld reicht nicht für Vereinsmitgliedschaften.\n\nDu bleibst nachmittags oft zuhause. Manchmal hilfst du im Haushalt, manchmal schaust du Serien. Strukturierte Aktivitäten fehlen dir.\n\n→ Sozial –2, Stress +2";
+      }
+    },
+    choices: [{ label: "➡️ Weiter", next: "alltag_schlaf" }]
+  },
+
+  alltag_schlaf: {
+    phase: "Alltag",
+    title: "😴 Schlaf & Wohnsituation (10 Jahre)",
+    text: "",  // dynamisch gesetzt
+    reflection: "Schlafmangel wirkt wie ein Unterrichtsausfall – das Gehirn kann sich schlechter konzentrieren. Laut Bertelsmann-Stiftung haben arme Kinder oft kein eigenes Zimmer und damit keinen Rückzugsort zum Lernen und Erholen.",
+    autoResolve: (s) => {
+      // Forschung: ~90%+ Gymnasiasten/Akademikerkinder haben eigenes Zimmer
+      // ~75% Hauptschüler haben eigenes Zimmer
+      // Kinder in Armut: oft kein eigenes Zimmer (beengte Verhältnisse)
+      // → Eigenes Zimmer: Standard bei mittlerem/hohem Einkommen, Ausnahme bei Armut
+      const hatEigenesZimmer =
+        s.profile.income === "hoch" ||
+        (s.profile.income === "mittel" && s.profile.family !== "viele Kinder" && Math.random() < 0.82) ||
+        (s.profile.income === "niedrig" && s.profile.wohnlage !== "benachteiligte Lage" && Math.random() < 0.30);
+
+      if (hatEigenesZimmer) {
+        s.stats.stress -= 8; s.stats.bildung += 4;
+        s.flags.hatEigenesZimmer = true;
+        pushLog(s, "🛏️ Eigenes Zimmer", "Du hast ein eigenes Zimmer – Ruhe, Rückzug, guter Schlaf.");
+        const extra = s.profile.income === "hoch" ? "\n\nEin eigenes Zimmer mit Schreibtisch, ruhiger Umgebung – für dich ist das normal. Für viele Mitschüler nicht." : "";
+        return "🛏️ Du hast ein eigenes Zimmer.\n\nEs ist ruhig, du kannst deine Sachen ordnen und ungestört lernen und schlafen. Das klingt selbstverständlich – ist es aber nicht für alle." + extra + "\n\n→ Bildung +4, Stress –8";
+      } else if (s.profile.income === "niedrig" || s.profile.wohnlage === "benachteiligte Lage") {
+        s.stats.stress += 9; s.stats.bildung -= 5; s.stats.sozial -= 2;
+        s.flags.hatEigenesZimmer = false;
+        pushLog(s, "😵 Kein eigenes Zimmer", "Beengte Wohnung – kein Rückzugsort, schlechter Schlaf.");
+        return "😵 Ihr wohnt eng. Du teilst das Zimmer, manchmal ist es laut – Streit, Fernseher, Geräusche von nebenan.\n\nDu schläfst schlecht. Morgens bist du müde und kannst dich in der Schule kaum konzentrieren. Einen ruhigen Platz zum Lernen gibt es nicht.\n\n→ Bildung –5, Stress +9, Sozial –2";
+      } else {
+        s.stats.stress += 3; s.stats.bildung += 1;
+        s.flags.hatEigenesZimmer = false;
+        pushLog(s, "🛋️ Geteiltes Zimmer", "Du teilst ein Zimmer – meistens okay, manchmal laut.");
+        return "🛋️ Du teilst ein Zimmer mit einem Geschwisterkind.\n\nMeistens geht es gut – manchmal ist es laut und du schläfst nicht genug. Ein eigener Rückzugsort wäre schön, aber er fehlt.\n\n→ Bildung +1, Stress +3";
+      }
+    },
+    choices: [{ label: "➡️ Weiter", next: "alltag_arzt" }]
+  },
+
+  alltag_arzt: {
+    phase: "Alltag",
+    title: "🏥 Gesundheit & Unterstützung (10 Jahre)",
+    text: "",  // dynamisch gesetzt
+    reflection: "Kinder, die schlecht sehen oder hören, werden manchmal fälschlicherweise als 'weniger klug' eingeschätzt. Dabei brauchen sie nur die richtige Unterstützung – die nicht alle bekommen.",
+    autoResolve: (s) => {
+      if (s.stats.geld >= 45 || s.flags.elternAkademiker) {
+        s.stats.bildung += 6; s.stats.stress -= 4;
+        pushLog(s, "👓 Brille bekommen", "Sehproblem erkannt – du bekommst schnell eine Brille.");
+        return "👓 Bei einer Untersuchung stellt sich heraus: Du siehst nicht gut.\n\nDeine Eltern reagieren sofort – Augenarzttermin, neue Brille, Problem gelöst. In der Schule läuft es danach viel besser.\n\n→ Bildung +6, Stress –4";
+      } else if (s.stats.geld >= 25) {
+        s.stats.stress += 5; s.stats.bildung -= 3;
+        pushLog(s, "⏳ Lange Wartezeit", "Du wartest monatelang auf einen Kassentermin.");
+        return "⏳ Du siehst schlecht – das wurde festgestellt. Aber ihr habt keinen Privatarzt und der Kassentermin ist erst in acht Monaten.\n\nIn der Zwischenzeit verpasst du vieles an der Tafel. Deine Lehrerin denkt, du passt nicht auf.\n\n→ Bildung –3, Stress +5";
+      } else {
+        s.stats.stress += 7; s.stats.bildung -= 8;
+        pushLog(s, "🤷 Unbemerkt geblieben", "Das Sehproblem bleibt unentdeckt – niemand kümmert sich.");
+        return "😔 Du siehst schlecht – aber niemand bemerkt es.\n\nDeine Eltern haben gerade andere Sorgen. In der Schule kämpfst du jeden Tag, ohne zu wissen warum. Die Lehrerin glaubt, du bist unaufmerksam.\n\n→ Bildung –8, Stress +7";
+      }
+    },
+    choices: [{ label: "➡️ Weiter", next: "uebergang" }]
+  },
+
+  reflection_questions: {
+    phase: "Ende",
+    title: "💬 Fragen für die Klassenrunde",
+    text:
+      "1️⃣  Wo hattest du wirklich eine freie Wahl – und wo nicht?\n\n" +
+      "2️⃣  Was hat dich am meisten überrascht?\n\n" +
+      "3️⃣  Warum kommen Kinder von Akademiker-Eltern so viel häufiger aufs Gymnasium?\n\n" +
+      "4️⃣  Welche Veränderung im System würde am meisten helfen?\n    (z. B. kostenloses Essen, bessere Geräte, mehr Förderung, weniger Bürokratie)\n\n" +
+      "5️⃣  Vergleicht eure Spielverläufe – wer hatte gleiche Noten aber andere Ergebnisse?\n\n" +
+      "6️⃣  Welche Alltagsdinge außerhalb der Schule haben deinen Weg beeinflusst? (Schlaf, Essen, Freizeit...)\n\n" +
+      "7️⃣  Welche Zufallsereignisse sind euch passiert? Wie fair war das?\n\n" +
+      "8️⃣  Was könntet ihr selbst tun – und was braucht ihr Unterstützung von anderen?\n\n" +
+      "9️⃣  Wenn ihr eine Sache im System ändern könntet: Was wäre das?\n\n" +
+      "🔟  Kennt ihr Menschen aus eurem Umfeld, denen es so ergangen ist wie im Spiel?",
+    reflection: "Tipp: Vergleicht eure Notenschnitte am Ende – und diskutiert, was dahinter steckt!",
+    choices: [
+      { label: "⬅️ Zurück zum Ergebnis", next: "result" },
+      { label: "🔁 Neu spielen", next: "__NEW__" }
+    ]
+  }
+};
+
+// ---------- Logic ----------
+function pushLog(s, title, text){
+  s.log.unshift({
+    t: nowISO(),
+    title,
+    text
+  });
+  if (s.log.length > 10) s.log.length = 10;
+}
+
+function setPhaseAndAgeByScene(s, sceneId){
+  const sc = SCENES[sceneId];
+  if (!sc) return;
+  s.phase = sc.phase || s.phase;
+  const ageMap = {
+    intro: 6, klassenfahrt: 8, hausaufgaben: 8, deutsch_ag: 9,
+    alltag_handy: 9, alltag_ernaehrung: 9, alltag_freizeit: 10,
+    alltag_schlaf: 10, alltag_arzt: 10,
+    uebergang: 10, gymnasium_entscheidung: 10, gymnasium_ergebnis: 10,
+    sek1_digital: 13, praktikum: 15,
+    sek1_konsum: 16, sek1_fuehrerschein: 17, sek1_zukunft: 18,
+    abschluss: 18, result: 18, reflection_questions: 18
+  };
+  if (sceneId in ageMap) s.age = ageMap[sceneId];
+}
+
+function applyEffects(s, effects){
+  if (!effects) return;
+  if (typeof effects === "function"){
+    effects(s);
+    normalizeStats(s);
+    return;
+  }
+  for (const [k,v] of Object.entries(effects)){
+    if (k === "flag" && Array.isArray(v)){
+      const [fk, fv] = v;
+      s.flags[fk] = fv;
+      continue;
+    }
+    if (k in s.stats){
+      s.stats[k] += v;
+    }
+  }
+  normalizeStats(s);
+}
+
+function normalizeStats(s){
+  s.stats.geld = clamp(s.stats.geld, 0, 100);
+  s.stats.bildung = clamp(s.stats.bildung, 0, 100);
+  s.stats.stress = clamp(s.stats.stress, 0, 100);
+  s.stats.sprache = clamp(s.stats.sprache, 0, 100);
+  s.stats.sozial = clamp(s.stats.sozial, 0, 100);
+}
+
+function computeOutcome(s){
+  const score =
+    0.40*s.stats.bildung +
+    0.20*s.stats.sprache +
+    0.15*s.stats.sozial +
+    0.10*s.stats.geld +
+    (-0.25)*s.stats.stress;
+
+  // Maximaler theoretischer Score (alle Stats perfekt)
+  const maxScore = 0.40*100 + 0.20*100 + 0.15*100 + 0.10*100 + (-0.25)*0;
+  // = 40 + 20 + 15 + 10 = 85
+
+  const pct = Math.round((Math.max(0, score) / maxScore) * 100);
+
+  if (score >= 58) return { label: "🟢 Gute Bildungschancen – du bist auf einem stabilen Weg!", kind: "ok", score, maxScore, pct };
+  if (score >= 40) return { label: "🟡 Gemischte Chancen – vieles hängt von weiterer Unterstützung ab.", kind: "warn", score, maxScore, pct };
+  if (score >= 22) return { label: "🔴 Schwieriger Weg – das System hat dir wenig Rückenwind gegeben.", kind: "danger", score, maxScore, pct };
+  return { label: "🔴 Sehr schwieriger Weg – strukturelle Benachteiligung ist hier klar sichtbar.", kind: "danger", score, maxScore, pct };
+}
+
+function gotoScene(sceneId){
+  if (sceneId === "__NEW__"){
+    startNew();
+    return;
+  }
+  if (sceneId === "__EXPORT__"){
+    exportJSON();
+    return;
+  }
+
+  if (!SCENES[sceneId]) return;
+
+  state.currentScene = sceneId;
+  setPhaseAndAgeByScene(state, sceneId);
+
+  // Notenschnitt berechnen und speichern
+  if (sceneId === "uebergang") {
+    state.flags.noteGrundschule = computeGrade(state);
+  }
+  if (sceneId === "sek1_konsum") {
+    state.flags.noteSek1 = computeGrade(state);
+  }
+
+  if (sceneId === "result"){
+    const out = computeOutcome(state);
+    pushLog(state, "Auswertung", `${out.label} (Score: ${Math.round(out.score)})`);
+  }
+
+  // Zufallsereignis prüfen (nicht am Anfang, Ende oder bei Übergängen)
+  const noEventScenes = ["intro","result","reflection_questions","gymnasium_ergebnis","abschluss"];
+  if (!noEventScenes.includes(sceneId)) {
+    const ev = rollRandomEvent(state);
+    if (ev) {
+      pendingEvent = ev;
+    }
+  }
+
+  saveLocal();
+  // Trigger scene card fade animation
+  const scEl = document.getElementById("sceneCard");
+  if (scEl) { scEl.style.animation="none"; scEl.offsetHeight; scEl.style.animation=""; }
+  render();
+}
+
+function startNew(){
+  state = rollStartState();
+  saveLocal();
+  render();
+  showProfileCard();
+}
+
+function resetAll(){
+  localStorage.removeItem("planspiel_state_v1");
+  startNew();
+}
+
+function saveLocal(){
+  localStorage.setItem("planspiel_state_v1", JSON.stringify(state));
+}
+
+function loadLocal(){
+  const raw = localStorage.getItem("planspiel_state_v1");
+  if (!raw) return null;
+  try{
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.stats || !parsed.profile) return null;
+    return parsed;
+  } catch(e){
+    return null;
+  }
+}
+
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `planspiel_${state.id}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ---------- Render ----------
+function el(id){ return document.getElementById(id); }
+
+function renderPills(){
+  const pb = el("pillbar");
+  pb.innerHTML = "";
+  el("ageLabel").textContent = state.age + " J.";
+  const pills = [
+    ["Region", state.profile.region],
+    ["Wohnlage", state.profile.wohnlage],
+    ["Familie", state.profile.family],
+    ["Einkommen", state.profile.income],
+    ["Sprache zuhause", state.profile.languageHome],
+    ["Eltern-Bildung", state.profile.elternBildung],
+    ["Eltern-Engagement", {
+      hoch: "❤️ Sehr engagiert",
+      mittel: "🙂 Mittel",
+      niedrig: "😐 Wenig Zeit",
+      vernachlaessigt: "😔 Kaum vorhanden"
+    }[state.flags.elternEngagement] || state.flags.elternEngagement]
+  ];
+  for (const [k,v] of pills){
+    if (!v) continue;
+    const d = document.createElement("div");
+    d.className = "pill";
+    d.innerHTML = `<span class="pill-label">${escapeHTML(k)}</span><b>${escapeHTML(v)}</b>`;
+    pb.appendChild(d);
+  }
+}
+
+function renderMeta(){
+  const m = el("meta");
+  m.innerHTML = "";
+  const rows = [
+    ["🏫 Phase", state.phase],
+    ["💻 Laptop", state.flags.hatLaptop ? "✅ ja" : "❌ nein"],
+    ["🎓 Gymnasium", state.flags.gymnasiumErreicht ? "✅ erreicht" : (state.age >= 11 ? "❌ nein" : "noch offen")],
+    [
+      "📋 Förderung (BuT)",
+      state.profile.income === "niedrig"
+        ? (state.flags.hatFoerderung ? "✅ Antrag möglich" : "❌ Nicht beantragt / unbekannt")
+        : "Kein Anspruch"
+    ]
+  ];
+  for (const [k,v] of rows){
+    const div = document.createElement("div");
+    div.className = "kv";
+    div.innerHTML = `<span>${escapeHTML(k)}</span><span>${escapeHTML(v)}</span>`;
+    m.appendChild(div);
+  }
+}
+
+function statBar(label, value, isInverse=false){
+  const wrap = document.createElement("div");
+  wrap.className = "stat";
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = `<span>${escapeHTML(label)}</span><span class="val">${Math.round(value)}/100</span>`;
+  const bar = document.createElement("div");
+  bar.className = "bar" + (isInverse ? " danger" : "");
+  const fill = document.createElement("div");
+  fill.style.width = `${clamp(value,0,100)}%`;
+  bar.appendChild(fill);
+  wrap.appendChild(row);
+  wrap.appendChild(bar);
+  return wrap;
+}
+
+function renderStats(){
+  const s = el("stats");
+  s.innerHTML = "";
+  s.appendChild(statBar("💰 Geld & Mittel", state.stats.geld));
+  s.appendChild(statBar("📚 Bildung & Wissen", state.stats.bildung));
+  s.appendChild(statBar("🗣️ Deutschkenntnisse", state.stats.sprache));
+  s.appendChild(statBar("🤝 Soziale Kontakte", state.stats.sozial));
+  s.appendChild(statBar("😰 Stress & Belastung", state.stats.stress, true));
+}
+
+function renderLog(){
+  const l = el("log");
+  l.innerHTML = "";
+  if (!state.log.length){
+    l.innerHTML = `<div class="entry">Noch keine Einträge.</div>`;
+    return;
+  }
+  for (const e of state.log){
+    const div = document.createElement("div");
+    div.className = "entry";
+    div.innerHTML = `<b>${escapeHTML(e.title)}</b><div style="margin-top:4px">${escapeHTML(e.text)}</div>`;
+    l.appendChild(div);
+  }
+}
+
+function renderSystemHint(){
+  // removed – replaced by cleaner inline hints
+}
+
+function renderScene(){
+  const sc = SCENES[state.currentScene];
+  if (!sc) return;
+
+  el("phaseLabel").textContent = sc.phase || state.phase;
+  el("sceneTitle").textContent = sc.title;
+
+  // autoResolve-Szenen: Text wird durch Profil-Logik gesetzt, nur "Weiter"-Button
+  let sceneText = sc.text;
+  const resolvedKey = "resolvedText_" + state.currentScene;
+  if (sc.autoResolve) {
+    if (!state.flags[resolvedKey]) {
+      // Erste Anzeige: autoResolve ausführen und Text speichern
+      const resolved = sc.autoResolve(state);
+      state.flags[resolvedKey] = resolved || "–";
+      state.flags["resolved_" + state.currentScene] = true;
+      normalizeStats(state);
+      saveLocal();
+      checkAchievements(state);
+      renderStats();
+      renderGrade();
+      renderLog();
+    }
+    // Immer gespeicherten Text anzeigen
+    sceneText = state.flags[resolvedKey];
+  }
+
+  // Dynamischer Text für gymnasium_ergebnis
+  if (state.currentScene === "gymnasium_ergebnis") {
+    if (state.flags.gymnasiumErreicht) {
+      sceneText = "🎉 Glückwunsch! Du kommst ans Gymnasium!\n\nDein familiärer Hintergrund und deine Leistungen haben geholfen. Aber bedenke: Andere Kinder mit ähnlichen Noten hatten nicht so viel Glück.";
+    } else {
+      sceneText = "😕 Es hat nicht geklappt mit dem Gymnasium.\n\nDu gehst auf die Realschule oder Hauptschule. Das bedeutet nicht, dass du nicht klug bist – die Chancen waren einfach ungleich verteilt.";
+    }
+    if (state.flags.lastGymChance !== undefined) {
+      sceneText += "\n\n📊 Deine berechnete Gymnasium-Chance lag bei " + state.flags.lastGymChance + "%.";
+    }
+  }
+  el("sceneText").textContent = sceneText;
+
+  // Gymnasium-Chance-Box anzeigen
+  const gymBox = el("gymchanceContainer");
+  gymBox.innerHTML = "";
+  if (sc.gymChance && state.currentScene === "gymnasium_entscheidung") {
+    let chance = 0.15;
+    if (state.flags.elternAkademiker) chance += 0.28;
+    if (state.profile.income === "hoch") chance += 0.12;
+    if (state.profile.income === "mittel") chance += 0.05;
+    if (state.stats.bildung >= 65) chance += 0.14;
+    else if (state.stats.bildung >= 50) chance += 0.07;
+    if (state.flags.kenntLehrkraft) chance += 0.08;
+    if (state.flags.uebungDeutschAG) chance += 0.04;
+    if (state.stats.sprache >= 60) chance += 0.05;
+    if (state.flags.elternEngagement === "hoch") chance += 0.12;
+    else if (state.flags.elternEngagement === "niedrig") chance -= 0.07;
+    else if (state.flags.elternEngagement === "vernachlaessigt") chance -= 0.15;
+    if (state.profile.wohnlage === "benachteiligte Lage") chance -= 0.05;
+    chance = Math.min(Math.max(chance, 0.04), 0.88);
+    const pct = Math.round(chance * 100);
+    const ell = state.flags.elternAkademiker ? "Akademiker-Kind: +28%" : "Nicht-Akademiker-Kind: ±0%";
+    const engLabel = { hoch: "+12%", mittel: "±0%", niedrig: "–7%", vernachlaessigt: "–15%" }[state.flags.elternEngagement] || "";
+    gymBox.innerHTML = `
+      <div class="gymchance-box">
+        <div class="chance-title">🎓 Deine Gymnasium-Chance: ${pct}%</div>
+        <div class="gymchance-bar"><div style="width:${pct}%"></div></div>
+        <div style="margin-top:8px; font-size:13px;">👨‍👩‍👧 ${ell} &nbsp;|&nbsp; ❤️ Eltern-Engagement: ${engLabel}<br>Zum Vergleich: Mit Akademiker-Eltern liegt die Chance oft bei 60–80%, ohne bei 10–25%.</div>
+      </div>`;
+  }
+
+  // Reflexion
+  const refEl = el("reflection");
+  if (sc.reflection) {
+    refEl.textContent = sc.reflection;
+    refEl.style.display = "block";
+  } else {
+    refEl.style.display = "none";
+  }
+
+  // Ergebnis-Box bei result
+  const choices = el("choices");
+  choices.innerHTML = "";
+
+  if (state.currentScene === "result") {
+    const out = computeOutcome(state);
+
+    const box = document.createElement("div");
+    box.className = "outcome-box " + out.kind;
+    box.textContent = out.label;
+    choices.appendChild(box);
+
+    // Score bar mit Maximum
+    const scoreDiv = document.createElement("div");
+    scoreDiv.style.cssText = "margin-top:12px; padding:14px; border-radius:14px; border:1px solid var(--border); background:rgba(0,0,0,.12);";
+    const scoreRounded = Math.round(out.score);
+    const maxRounded = Math.round(out.maxScore);
+    const barColor = out.kind === "ok" ? "rgba(113,247,183,.8)" : out.kind === "warn" ? "rgba(255,209,102,.8)" : "rgba(255,107,107,.8)";
+    scoreDiv.innerHTML = `
+      <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px;">
+        <span>📊 Dein Bildungspfad-Score</span>
+        <span style="color:var(--text); font-weight:700">${scoreRounded} / ${maxRounded} Pkt. (${out.pct}%)</span>
+      </div>
+      <div style="height:12px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden;">
+        <div style="height:100%; width:${out.pct}%; background:${barColor}; border-radius:999px; transition:width .4s ease;"></div>
+      </div>
+      <div style="margin-top:8px; font-size:12px; color:var(--muted);">Maximum: ${maxRounded} Punkte (Bildung, Sprache, Sozial, Geld je 100 – Stress 0)</div>
+    `;
+    choices.appendChild(scoreDiv);
+
+    // Noten
+    const grades = [];
+    if (state.flags.noteGrundschule !== null) grades.push("Grundschule: Ø " + state.flags.noteGrundschule.toFixed(1));
+    if (state.flags.noteSek1 !== null) grades.push("Sek I: Ø " + state.flags.noteSek1.toFixed(1));
+    if (grades.length) {
+      const gradeDiv = document.createElement("div");
+      gradeDiv.style.cssText = "margin-top:10px; padding:12px 14px; border-radius:14px; border:1px solid rgba(110,231,255,.25); background:rgba(110,231,255,.06); color:var(--accent); font-size:14px;";
+      gradeDiv.innerHTML = "<b>📝 Deine Noten:</b><br>" + grades.join(" &nbsp;|&nbsp; ");
+      choices.appendChild(gradeDiv);
+    }
+
+    // Achievements
+    const earned = state.flags.achievements || [];
+    if (earned.length) {
+      const achDiv = document.createElement("div");
+      achDiv.style.cssText = "margin-top:10px; padding:12px 14px; border-radius:14px; border:1px solid rgba(255,209,102,.25); background:rgba(255,209,102,.06); font-size:14px;";
+      achDiv.innerHTML = "<b style='color:var(--warn)'>🏅 Deine Achievements:</b><br><div style='margin-top:6px; display:flex; flex-wrap:wrap; gap:6px'>" +
+        earned.map(a => `<span style='background:rgba(255,255,255,.07); border:1px solid var(--border); border-radius:8px; padding:4px 9px; font-size:13px'>${a}</span>`).join("") +
+        "</div>";
+      choices.appendChild(achDiv);
+    }
+
+    const spacer = document.createElement("div");
+    spacer.style.height = "12px";
+    choices.appendChild(spacer);
+
+    // ── Freunde einladen Button ──
+    const inviteBtn = document.createElement("button");
+    inviteBtn.className = "btn btn-full";
+    inviteBtn.style.cssText = "background:linear-gradient(135deg,rgba(46,175,114,.12),rgba(27,35,84,.06)); border-color:rgba(46,175,114,.3); color:var(--ok); text-align:center;";
+    inviteBtn.innerHTML = `<b style="font-family:var(--display)">🎮 Freund:in einladen & Ergebnis teilen</b><div class="tag">Link kopieren · QR-Code · WhatsApp</div>`;
+    inviteBtn.addEventListener("click", () => { playClick(); showQR(); });
+    choices.appendChild(inviteBtn);
+  }
+
+  // Anzahl Choices bestimmt Layout
+  const choiceCount = sc.choices.length;
+  if (choiceCount <= 2) {
+    choices.classList.add("single-col");
+  } else {
+    choices.classList.remove("single-col");
+  }
+
+  for (const ch of sc.choices){
+    const btn = document.createElement("button");
+    const isWeiter = ch.label.startsWith("➡️") || ch.label.startsWith("🏁");
+    const isBack   = ch.label.startsWith("⬅️");
+    const isNeu    = ch.label.startsWith("🔁") || ch.label.startsWith("↩️");
+    const isFullWidth = isWeiter || isBack || isNeu ||
+                        ch.label.startsWith("❓") || choiceCount <= 2;
+    btn.className = "btn" + (isFullWidth ? " btn-full" : "") +
+                    (isWeiter ? " btn-continue" : "") +
+                    (isBack   ? " btn-back"     : "") +
+                    (isNeu    ? " btn-neu"       : "");
+    let locked = false;
+    if (typeof ch.requires === "function"){
+      locked = !ch.requires(state);
+    }
+    btn.disabled = locked;
+    // Always render note/tag regardless of effects type
+    const noteText = ch.note || "";
+    btn.innerHTML = `
+      <div>${escapeHTML(ch.label)}</div>
+      ${noteText ? `<div class="tag">💬 ${escapeHTML(noteText)}</div>` : ``}
+      ${locked ? `<span class="lock">${escapeHTML(ch.lockReason || "⛔ Voraussetzung nicht erfüllt.")}</span>` : ``}
+    `;
+    btn.addEventListener("click", () => {
+      playClick();
+      if (ch.next === "__NEW__"){ gotoScene("__NEW__"); return; }
+      if (ch.effects){
+        applyEffects(state, ch.effects);
+        if (ch.label && !ch.label.startsWith("➡️")) pushLog(state, sc.title, "Entscheidung: " + ch.label);
+      }
+      checkAchievements(state);
+      saveLocal();
+      gotoScene(ch.next);
+    });
+    choices.appendChild(btn);
+  }
+}
+
+function renderGrade(){
+  const gv = el("gradeVal");
+  const gd = el("gradeDesc");
+  const gb = el("gradeBox");
+  let grade = null;
+  let label = "";
+  if (state.flags.noteSek1 !== null) {
+    grade = state.flags.noteSek1;
+    label = "Sek I";
+  } else if (state.flags.noteGrundschule !== null) {
+    grade = state.flags.noteGrundschule;
+    label = "Grundschule";
+  }
+  if (grade !== null) {
+    gv.textContent = grade.toFixed(1);
+    gd.textContent = gradeDescription(grade) + (label ? ` (${label})` : "");
+    // Farbe je nach Note
+    if (grade <= 2.5) gb.style.borderColor = "rgba(113,247,183,.35)";
+    else if (grade <= 3.5) gb.style.borderColor = "rgba(110,231,255,.35)";
+    else if (grade <= 4.5) gb.style.borderColor = "rgba(255,209,102,.35)";
+    else gb.style.borderColor = "rgba(255,107,107,.35)";
+  } else {
+    gv.textContent = "–";
+    gd.textContent = "Noch keine Noten";
+  }
+}
+
+function showEventOverlay(ev){
+  // Remove existing overlay if any
+  const existing = document.getElementById("eventOverlay");
+  if (existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.className = "event-overlay";
+  overlay.id = "eventOverlay";
+
+  const effectText = ev.effectLabels && ev.effectLabels.length
+    ? ev.effectLabels.map(e => e.text).join("  ·  ")
+    : "";
+
+  overlay.innerHTML = `
+    <div class="event-card">
+      <div class="event-card-head">
+        <div class="ev-icon">${ev.icon}</div>
+        <div class="ev-title">⚡ ${escapeHTML(ev.title)}</div>
+      </div>
+      <div class="event-card-body">
+        <p class="ev-text">${escapeHTML(ev.text)}</p>
+        ${effectText ? `<div class="ev-effect">${escapeHTML(effectText)}</div>` : ""}
+        <button class="event-btn" id="eventDismiss">✓ Verstanden – weiter!</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  document.getElementById("eventDismiss").addEventListener("click", () => {
+    // Apply effects
+    ev.effects(state);
+    normalizeStats(state);
+    pushLog(state, "⚡ " + ev.title, ev.text.split(".")[0] + ".");
+    saveLocal();
+    overlay.remove();
+    pendingEvent = null;
+    render();
+  });
+}
+
+function render(){
+  renderPills();
+  renderMeta();
+  renderStats();
+  renderGrade();
+  renderLog();
+  renderScene();
+  renderProgressBarAndButtons();
+  // Show event overlay after render if pending
+  if (pendingEvent) {
+    showEventOverlay(pendingEvent);
+    pendingEvent = null;
+  }
+}
+
+// ---------- Safety: basic escaping ----------
+function escapeHTML(str){
+  return String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[m]));
+}
+
+// ---------- Click Sound ----------
+function playClick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(440, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.06);
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.13);
+  } catch(e) { /* Audio nicht verfügbar */ }
+}
+
+// ---------- Theme Toggle ----------
+let isLightMode = localStorage.getItem("planspiel_theme") === "light";
+function applyTheme() {
+  if (isLightMode) {
+    document.body.classList.remove("dark");
+    document.body.classList.add("light-mode");
+    el("btnTheme").textContent = "🌙 Dunkel";
+  } else {
+    document.body.classList.add("dark");
+    document.body.classList.remove("light-mode");
+    el("btnTheme").textContent = "☀️ Hell";
+  }
+}
+
+// ---------- Achievements ----------
+const ACHIEVEMENT_DEFS = [
+  { id: "ach_gym",      label: "🎓 Gymnasiast:in",        check: (s) => s.flags.gymnasiumErreicht },
+  { id: "ach_laptop",   label: "💻 Digital-Profi",         check: (s) => s.flags.hatLaptop },
+  { id: "ach_foerder",  label: "📋 Gut vernetzt",           check: (s) => s.flags.hatFoerderung && s.flags.kenntLehrkraft },
+  { id: "ach_ag",       label: "🗣️ Sprachtalent",           check: (s) => s.flags.uebungDeutschAG && s.stats.sprache >= 65 },
+  { id: "ach_eingeschult", label: "🎒 Eingeschult",         check: (s) => s.age >= 7 },
+  { id: "ach_bildung",  label: "📚 Wissenshungrig",         check: (s) => s.stats.bildung >= 75 },
+  { id: "ach_sozial",   label: "🤝 Netzwerker:in",          check: (s) => s.stats.sozial >= 70 },
+  { id: "ach_praktikum",label: "🔍 Praktikum-Champion",     check: (s) => s.log.some(l => l.title === "Praktikum" && l.text.includes("findest")) },
+  { id: "ach_trotzdem", label: "💪 Trotz allem weiter",      check: (s) => s.stats.stress >= 60 && s.stats.bildung >= 45 },
+  { id: "ach_armut",    label: "🌱 Trotz Armut ans Gym",    check: (s) => s.profile.income === "niedrig" && s.flags.gymnasiumErreicht },
+  { id: "ach_18",       label: "🎂 Volljährig!",            check: (s) => s.age >= 18 },
+  { id: "ach_auto",     label: "🚗 Führerschein gemacht",   check: (s) => s.flags.hatFuehrerschein === true },
+];
+
+function checkAchievements(s) {
+  if (!s.flags.achievements) s.flags.achievements = [];
+  for (const def of ACHIEVEMENT_DEFS) {
+    if (!s.flags.achievements.includes(def.label) && def.check(s)) {
+      s.flags.achievements.push(def.label);
+      showAchievementToast(def.label);
+    }
+  }
+}
+
+function showAchievementToast(label) {
+  // Remove any existing toast
+  const old = document.getElementById("achToast");
+  if (old) old.remove();
+
+  const toast = document.createElement("div");
+  toast.className = "ach-toast";
+  toast.id = "achToast";
+  toast.textContent = "🏅 Achievement freigeschaltet: " + label;
+  document.body.appendChild(toast);
+
+  // Play achievement sound
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [523, 659, 784, 1047].forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = "sine";
+      gain.gain.setValueAtTime(0.07, ctx.currentTime + i * 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.15);
+      osc.start(ctx.currentTime + i * 0.1);
+      osc.stop(ctx.currentTime + i * 0.1 + 0.2);
+    });
+  } catch(e) {}
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { toast.classList.add("show"); });
+  });
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+// ---------- Fortschrittsbalken ----------
+const SCENE_ORDER = [
+  "intro","klassenfahrt","hausaufgaben","deutsch_ag",
+  "alltag_handy","alltag_ernaehrung","alltag_freizeit","alltag_schlaf","alltag_arzt",
+  "uebergang","gymnasium_entscheidung","gymnasium_ergebnis",
+  "sek1_digital","praktikum",
+  "sek1_konsum","sek1_fuehrerschein","sek1_zukunft",
+  "abschluss","result"
+];
+
+const PROGRESS_MILESTONES = [
+  { pct: 0,   label: "🎒", tip: "Einschulung (6 J.)" },
+  { pct: 28,  label: "📖", tip: "Grundschule (8–10 J.)" },
+  { pct: 55,  label: "🏫", tip: "Übergang Sek I (10 J.)" },
+  { pct: 75,  label: "💼", tip: "Mittelstufe (13–15 J.)" },
+  { pct: 90,  label: "🎓", tip: "Oberstufe (16–18 J.)" },
+  { pct: 100, label: "🏁", tip: "Abschluss (18 J.)" },
+];
+
+function renderProgressBar() {
+  const idx = SCENE_ORDER.indexOf(state.currentScene);
+  const total = SCENE_ORDER.length - 1;
+  const pct = idx < 0 ? 0 : Math.round((idx / total) * 100);
+
+  const fill = el("progressFill");
+  fill.style.width = pct + "%";
+
+  // Render milestone dots below the bar
+  const dotsContainer = el("progressDots");
+  if (dotsContainer) {
+    dotsContainer.innerHTML = "";
+    PROGRESS_MILESTONES.forEach(m => {
+      const dot = document.createElement("div");
+      dot.className = "progress-dot" +
+        (pct > m.pct ? " done" : "") +
+        (Math.abs(pct - m.pct) < 8 ? " active" : "");
+      dot.innerHTML = `
+        <div class="dot-circle"></div>
+        <div class="dot-label">${m.label}</div>
+      `;
+      dot.title = m.tip;
+      dotsContainer.appendChild(dot);
+    });
+  }
+}
+
+// ---------- Profilkarte ----------
+function showProfileCard() {
+  const existing = document.getElementById("profileOverlay");
+  if (existing) existing.remove();
+
+  const engMap = {
+    hoch:            { label: "❤️ Eltern sehr engagiert", desc: "Deine Eltern kümmern sich aktiv um deine Schule und deinen Alltag." },
+    mittel:          { label: "🙂 Eltern mittel engagiert", desc: "Deine Eltern sind da – aber oft beschäftigt oder unsicher, wie sie helfen können." },
+    niedrig:         { label: "😐 Eltern haben wenig Zeit", desc: "Deine Eltern sind überlastet durch Arbeit oder andere Belastungen. Du musst vieles selbst regeln." },
+    vernachlaessigt: { label: "😔 Eltern kaum präsent", desc: "Deine Eltern kümmern sich kaum um deinen Schulalltag. Du bist oft auf dich allein gestellt." }
+  };
+  const eng = engMap[state.flags.elternEngagement] || engMap.mittel;
+
+  const incomeEmoji = { hoch: "💰💰", mittel: "💰", niedrig: "🪙" };
+  const regionEmoji = { "Großstadt": "🏙️", "Mittelstadt": "🏘️", "Ländlicher Raum": "🌾" };
+  const familyEmoji = { "2 Elternteile": "👨‍👩‍👧", "alleinerziehend": "🧑‍👧", "Patchwork": "👪" };
+
+  const regionArticle = { "Großstadt": "einer", "Mittelstadt": "einer", "Ländlicher Raum": "einem ländlichen Gebiet in" };
+  const regionPrep = state.profile.region === "Ländlicher Raum"
+    ? "einem ländlichen Gebiet in Deutschland"
+    : `${regionArticle[state.profile.region] || "einer"} ${escapeHTML(state.profile.region || "deutschen Stadt")}`;
+
+  const overlay = document.createElement("div");
+  overlay.className = "profile-overlay";
+  overlay.id = "profileOverlay";
+  overlay.innerHTML = `
+    <div class="profile-card">
+      <div class="pc-stamp">🎲</div>
+      <div class="pc-title">Dein zufälliges Profil</div>
+      <div class="pc-subtitle">Genau wie im echten Leben – per Zufall bestimmt</div>
+      <div class="pc-headline">👤 Du bist ein Kind aus ${regionPrep}</div>
+      <div class="pc-grid">
+        <div class="pc-item">
+          <div class="pc-label">📍 Region</div>
+          <div class="pc-val">${regionEmoji[state.profile.region] || ""} ${escapeHTML(state.profile.region || "–")}</div>
+        </div>
+        <div class="pc-item">
+          <div class="pc-label">🏠 Wohnlage</div>
+          <div class="pc-val">${escapeHTML(state.profile.wohnlage || "–")}</div>
+        </div>
+        <div class="pc-item">
+          <div class="pc-label">👨‍👩‍👧 Familie</div>
+          <div class="pc-val">${familyEmoji[state.profile.family] || ""} ${escapeHTML(state.profile.family || "–")}</div>
+        </div>
+        <div class="pc-item">
+          <div class="pc-label">💶 Einkommen</div>
+          <div class="pc-val">${incomeEmoji[state.profile.income] || ""} ${escapeHTML(state.profile.income || "–")}</div>
+        </div>
+        <div class="pc-item">
+          <div class="pc-label">🗣️ Sprache zuhause</div>
+          <div class="pc-val">${escapeHTML(state.profile.languageHome || "–")}</div>
+        </div>
+        <div class="pc-item">
+          <div class="pc-label">🎓 Eltern-Bildung</div>
+          <div class="pc-val">${escapeHTML(state.profile.elternBildung || "–")}</div>
+        </div>
+      </div>
+      <div class="pc-engagement ${state.flags.elternEngagement}">
+        <b>${eng.label}</b><br>
+        <span style="font-size:13px; opacity:.85; font-weight:600;">${eng.desc}</span>
+      </div>
+      <button class="pc-start-btn" id="pcStartBtn">🚀 Los geht's – Spiel starten!</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  document.getElementById("pcStartBtn").addEventListener("click", () => {
+    playClick();
+    overlay.remove();
+    gotoScene("intro");
+  });
+}
+
+// ---------- Was wäre wenn ----------
+function computeHypotheticalScore(overrides) {
+  return simulateFullGame(overrides);
+}
+
+function showWhatIf() {
+  const existing = document.getElementById("wwiwOverlay");
+  if (existing) { existing.remove(); return; }
+
+  const overlay = document.createElement("div");
+  overlay.className = "wwiw-overlay";
+  overlay.id = "wwiwOverlay";
+
+  const currentOut = computeOutcome(state);
+
+  overlay.innerHTML = `
+    <div class="wwiw-card">
+      <h3>🔮 Was wäre wenn…?</h3>
+      <div class="wwiw-sub">Verändere Startbedingungen und sieh wie sich dein Score entwickelt hätte.</div>
+
+      <div class="wwiw-row">
+        <label>💶 Einkommen</label>
+        <select id="ww-income">
+          <option value="">– unverändert –</option>
+          <option value="hoch">Hoch</option>
+          <option value="mittel">Mittel</option>
+          <option value="niedrig">Niedrig</option>
+        </select>
+      </div>
+      <div class="wwiw-row">
+        <label>🎓 Eltern-Bildung</label>
+        <select id="ww-bildung">
+          <option value="">– unverändert –</option>
+          <option value="Akademiker (Uni/FH)">Akademiker (Uni/FH)</option>
+          <option value="Berufsausbildung">Berufsausbildung</option>
+          <option value="ohne Abschluss">Ohne Abschluss</option>
+        </select>
+      </div>
+      <div class="wwiw-row">
+        <label>❤️ Eltern-Engagement</label>
+        <select id="ww-engagement">
+          <option value="">– unverändert –</option>
+          <option value="hoch">Sehr engagiert</option>
+          <option value="mittel">Mittel</option>
+          <option value="niedrig">Wenig Zeit</option>
+          <option value="vernachlaessigt">Kaum vorhanden</option>
+        </select>
+      </div>
+      <div class="wwiw-row">
+        <label>📍 Region</label>
+        <select id="ww-region">
+          <option value="">– unverändert –</option>
+          <option value="Großstadt">Großstadt</option>
+          <option value="Mittelstadt">Mittelstadt</option>
+          <option value="Ländlicher Raum">Ländlicher Raum</option>
+        </select>
+      </div>
+
+      <div class="wwiw-result" id="wwiwResult">
+        <div class="wwiw-score-row">
+          <span>Dein echter Score:</span>
+          <b>${Math.round(currentOut.score)} / ${Math.round(currentOut.maxScore)} Pkt. (${currentOut.pct}%)</b>
+        </div>
+        <div class="wwiw-score-row" id="wwiwHypoRow" style="display:none">
+          <span>Hypothetischer Score:</span>
+          <b id="wwiwHypoScore">–</b>
+        </div>
+        <div id="wwiwDiff" style="margin-top:8px; font-size:13px; color:var(--muted);">Wähle oben eine Bedingung zum Vergleichen.</div>
+      </div>
+
+      <button class="wwiw-btn" id="wwiwCalcBtn">🔮 Berechnen</button>
+      <button class="wwiw-close" id="wwiwCloseBtn">✕ Schließen</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  document.getElementById("wwiwCalcBtn").addEventListener("click", () => {
+    playClick();
+    const income = document.getElementById("ww-income").value;
+    const bildung = document.getElementById("ww-bildung").value;
+    const engagement = document.getElementById("ww-engagement").value;
+    const region = document.getElementById("ww-region").value;
+
+    if (!income && !bildung && !engagement && !region) {
+      document.getElementById("wwiwDiff").textContent = "Bitte wähle mindestens eine Bedingung zum Ändern.";
+      return;
+    }
+
+    // Detect if selected values match real profile exactly → no change
+    const sameIncome     = !income     || income     === state.profile.income;
+    const sameBildung    = !bildung    || bildung    === state.profile.elternBildung;
+    const sameEngagement = !engagement || engagement === state.flags.elternEngagement;
+    const sameRegion     = !region     || region     === state.profile.region;
+
+    if (sameIncome && sameBildung && sameEngagement && sameRegion) {
+      document.getElementById("wwiwHypoRow").style.display = "flex";
+      document.getElementById("wwiwHypoScore").textContent = `${Math.round(currentOut.score)} / ${Math.round(currentOut.maxScore)} Pkt. (${currentOut.pct}%)`;
+      document.getElementById("wwiwDiff").innerHTML = `
+        <span style="color:var(--muted); font-weight:700; font-size:15px;">+0 Punkte Unterschied</span><br>
+        <span style="margin-top:4px; display:block; color:var(--muted)">⚪ Das sind dieselben Bedingungen wie dein echtes Profil – kein Unterschied.</span>
+      `;
+      return;
+    }
+
+    const overrides = {};
+    if (income)     overrides.income           = income;
+    if (bildung)    overrides.elternBildung     = bildung;
+    if (engagement) overrides.elternEngagement  = engagement;
+    if (region)     overrides.region            = region;
+
+    // Baseline: simulate the real profile (without overrides) for fair comparison
+    const baseline = simulateFullGame({});
+    const hypo     = computeHypotheticalScore(overrides);
+    const diff     = hypo.score - baseline.score;
+    const diffStr  = (diff >= 0 ? "+" : "") + diff;
+    const diffColor = diff > 8 ? "var(--ok)" : diff < -8 ? "var(--danger)" : "var(--warn)";
+
+    document.getElementById("wwiwHypoRow").style.display = "flex";
+    document.getElementById("wwiwHypoScore").textContent = `${hypo.score} / ${hypo.maxScore} Pkt. (${hypo.pct}%)`;
+
+    let interpretation = "";
+    if (diff > 20)       interpretation = "🟢 Mit diesen Bedingungen hättest du deutlich bessere Chancen gehabt!";
+    else if (diff > 8)   interpretation = "🟡 Diese Bedingungen hätten dir spürbar geholfen.";
+    else if (diff < -20) interpretation = "🔴 Mit diesen Bedingungen wäre dein Weg noch viel schwerer gewesen.";
+    else if (diff < -8)  interpretation = "🟡 Diese Bedingungen hätten dich merklich benachteiligt.";
+    else                 interpretation = "⚪ Der Unterschied wäre gering gewesen.";
+
+    document.getElementById("wwiwDiff").innerHTML = `
+      <span style="color:${diffColor}; font-weight:700; font-size:16px;">${diffStr} Punkte Unterschied</span><br>
+      <span style="margin-top:4px; display:block; color:var(--muted)">${interpretation}</span>
+      <div style="margin-top:8px; font-size:12px; color:var(--muted);">
+        🎓 Gymnasium-Wahrscheinlichkeit (simuliert): <b style="color:var(--text)">${hypo.gymChance}%</b>
+        vs. dein Profil: <b style="color:var(--text)">${baseline.gymChance}%</b>
+      </div>
+    `;
+  });
+
+  document.getElementById("wwiwCloseBtn").addEventListener("click", () => {
+    playClick();
+    overlay.remove();
+  });
+}
+
+// ---------- QR-Code Generator (Nayuki qrcodegen, MIT License, minimal port) ----------
+// Generates a proper scannable QR code matrix for short strings (up to ~50 chars)
+// ---------- QR-Code: via qrcode.js (davidshimjs, MIT) ----------
+// Loaded dynamically from cdnjs for guaranteed scannability
+const QRGen = (() => {
+  let _loaded = false;
+  let _pending = [];
+
+  function loadLib(cb) {
+    if (_loaded) { cb(); return; }
+    _pending.push(cb);
+    if (_pending.length > 1) return; // already loading
+    const s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+    s.onload = () => { _loaded = true; _pending.forEach(f => f()); _pending = []; };
+    s.onerror = () => { _pending.forEach(f => f(null)); _pending = []; };
+    document.head.appendChild(s);
+  }
+
+  return {
+    draw(text, canvas, scale = 7) {
+      // We'll use a div-based approach; returns a promise-like
+      loadLib((err) => {
+        if (err || typeof QRCode === "undefined") {
+          // Fallback: draw an X on the canvas
+          const ctx = canvas.getContext("2d");
+          canvas.width = canvas.height = 100;
+          ctx.fillStyle = "#fff"; ctx.fillRect(0,0,100,100);
+          ctx.fillStyle = "#c00"; ctx.font = "12px sans-serif";
+          ctx.fillText("QR Fehler", 5, 55);
+          return;
+        }
+        // QRCode lib works on a div, then we copy to canvas
+        const div = document.createElement("div");
+        div.style.visibility = "hidden";
+        div.style.position = "fixed";
+        div.style.top = "-9999px";
+        document.body.appendChild(div);
+
+        const size = (25 + 2 * 3) * scale; // match our expected output size
+        new QRCode(div, {
+          text: text,
+          width: size,
+          height: size,
+          colorDark: "#000000",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+
+        // Copy the generated image to our canvas
+        setTimeout(() => {
+          const img = div.querySelector("img") || div.querySelector("canvas");
+          if (img && img.tagName === "CANVAS") {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+          } else if (img && img.tagName === "IMG") {
+            const i = new Image();
+            i.onload = () => {
+              canvas.width = i.width;
+              canvas.height = i.height;
+              const ctx = canvas.getContext("2d");
+              ctx.drawImage(i, 0, 0);
+            };
+            i.src = img.src;
+          }
+          document.body.removeChild(div);
+        }, 150);
+      });
+      return true;
+    }
+  };
+})();
+
+// ---------- Ergebniskarte Canvas ----------
+function buildResultCanvas(canvas) {
+  const out = computeOutcome(state);
+  const grades = [];
+  if (state.flags.noteGrundschule) grades.push("GS Ø" + state.flags.noteGrundschule.toFixed(1));
+  if (state.flags.noteSek1) grades.push("Sek Ø" + state.flags.noteSek1.toFixed(1));
+  const ach = (state.flags.achievements||[]).length;
+  const W=340, H=345;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#0b1020"; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="rgba(110,231,255,0.5)"; ctx.lineWidth=2;
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(3,3,W-6,H-6,14); else ctx.rect(3,3,W-6,H-6);
+  ctx.stroke();
+  ctx.fillStyle="rgba(110,231,255,0.12)"; ctx.fillRect(3,3,W-6,42);
+  ctx.fillStyle="#6ee7ff"; ctx.font="bold 14px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("🎮 Dein Weg – Bildungsergebnis", W/2, 28);
+  ctx.fillStyle="rgba(255,255,255,0.07)"; ctx.fillRect(14,52,W-28,26);
+  const barColor=out.kind==="ok"?"#71f7b7":out.kind==="warn"?"#ffd166":"#ff6b6b";
+  ctx.fillStyle=barColor; ctx.fillRect(14,52,Math.round((W-28)*out.pct/100),26);
+  ctx.fillStyle="#0b1020"; ctx.font="bold 12px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("Score: "+Math.round(out.score)+" / 85 Pkt. ("+out.pct+"%)", W/2, 69);
+  const engShort={hoch:"Sehr hoch",mittel:"Mittel",niedrig:"Wenig Zeit",vernachlaessigt:"Kaum da"};
+  const rows=[
+    ["🎓 Gymnasium", state.flags.gymnasiumErreicht?"Ja ✅":"Nein ❌"],
+    ["📝 Noten", grades.length?grades.join(" | "):"–"],
+    ["🏅 Achievements", ach+" freigeschaltet"],
+    ["💰 Einkommen", state.profile.income||"–"],
+    ["🎓 Elternbildung", (state.profile.elternBildung||"–").replace("Akademiker (Uni/FH)","Akademiker")],
+    ["❤️ Eltern-Engagement", engShort[state.flags.elternEngagement]||"–"],
+    ["🗺️ Region", state.profile.region||"–"],
+  ];
+  rows.forEach(([label,value],i)=>{
+    const y=86+i*30;
+    ctx.fillStyle=i%2===0?"rgba(255,255,255,0.04)":"transparent"; ctx.fillRect(10,y,W-20,26);
+    ctx.fillStyle="rgba(165,175,210,0.9)"; ctx.font="11px sans-serif"; ctx.textAlign="left";
+    ctx.fillText(label,18,y+17);
+    ctx.fillStyle="#e8ecff"; ctx.font="bold 11px sans-serif"; ctx.textAlign="right";
+    ctx.fillText(value,W-18,y+17);
+  });
+  ctx.fillStyle="rgba(110,231,255,0.4)"; ctx.font="10px sans-serif"; ctx.textAlign="center";
+  ctx.fillText("Screenshot & in der Klasse vergleichen!", W/2, H-8);
+}
+
+async function showQR() {
+  const existing = document.getElementById("qrOverlay");
+  if (existing) { existing.remove(); return; }
+
+  const out = computeOutcome(state);
+  const grades = [];
+  if (state.flags.noteGrundschule) grades.push("GS: Ø" + state.flags.noteGrundschule.toFixed(1));
+  if (state.flags.noteSek1) grades.push("Sek: Ø" + state.flags.noteSek1.toFixed(1));
+  const ach = (state.flags.achievements || []).length;
+  const gymText = state.flags.gymnasiumErreicht ? "✅ Gymnasium" : "❌ Kein Gym";
+  const engLabel = ({hoch:"Sehr engagiert",mittel:"Mittel",niedrig:"Wenig Zeit",vernachlaessigt:"Kaum da"})[state.flags.elternEngagement] || "";
+
+  // Invite link: current page URL as the game link
+  const gameUrl = window.location.href.split("?")[0];
+
+  // QR content = the game URL (always scannable & meaningful)
+  const qrText = gameUrl;
+
+  const overlay = document.createElement("div");
+  overlay.className = "qr-overlay";
+  overlay.id = "qrOverlay";
+  overlay.innerHTML = `
+    <div class="qr-card" style="max-width:500px">
+      <h3>📲 Teilen & Einladen</h3>
+      <div class="qr-sub">Zeig dein Ergebnis – oder lade Freunde zum Spielen ein.</div>
+
+      <div style="display:grid; grid-template-columns:1fr auto; gap:16px; align-items:start; margin-bottom:16px">
+        <canvas id="resultCanvas" style="border-radius:12px; width:100%; image-rendering:pixelated;"></canvas>
+        <div style="text-align:center; flex-shrink:0">
+          <canvas id="qrSmall" style="border-radius:8px; display:block; margin:0 auto 6px; border:3px solid var(--border);"></canvas>
+          <div style="font-size:10px; color:var(--muted); line-height:1.4; max-width:90px">📷 QR scannen<br>→ Spiel öffnen</div>
+        </div>
+      </div>
+
+      <div class="qr-summary" style="margin-top:0; margin-bottom:14px">
+        <b style="color:var(--ok)">Dein Ergebnis:</b><br>
+        📊 <b>${Math.round(out.score)} / 85 Pkt. (${out.pct}%)</b> &nbsp;|&nbsp; ${gymText}<br>
+        ${grades.length ? "📝 " + grades.join(" | ") + "<br>" : ""}
+        🏅 ${ach} Achievement(s) &nbsp;|&nbsp; ❤️ ${escapeHTML(engLabel)}<br>
+        👤 ${escapeHTML(state.profile.income||"")} · ${escapeHTML((state.profile.elternBildung||"").replace("Akademiker (Uni/FH)","Akademiker"))} · ${escapeHTML(state.profile.region||"")}
+      </div>
+
+      <!-- FREUND EINLADEN -->
+      <div style="border:1.5px solid var(--border); border-radius:14px; padding:14px; margin-bottom:14px; background:rgba(27,35,84,.04)">
+        <div style="font-weight:800; font-size:13px; color:var(--text); margin-bottom:10px;">
+          🎮 Freund:in zum Spiel einladen
+        </div>
+        <div style="display:flex; gap:8px; align-items:stretch;">
+          <input id="inviteInput" readonly
+            value="${escapeHTML(gameUrl)}"
+            style="flex:1; padding:9px 12px; border-radius:10px; border:1.5px solid var(--border);
+                   background:var(--card); color:var(--text); font-family:var(--sans);
+                   font-size:12px; cursor:pointer; min-width:0;"
+            onclick="this.select()"
+          />
+          <button id="inviteCopyBtn"
+            style="padding:9px 14px; border-radius:10px;
+                   border:1.5px solid var(--border); background:var(--ink); color:#fff;
+                   font-family:var(--display); font-size:12px; font-weight:900;
+                   cursor:pointer; white-space:nowrap; transition:transform .1s;">
+            📋 Kopieren
+          </button>
+        </div>
+        <div id="inviteCopied" style="display:none; margin-top:8px; font-size:12px; color:var(--ok); font-weight:700;">
+          ✅ Link kopiert! Schick ihn deiner Freundin / deinem Freund.
+        </div>
+
+        <!-- Share API falls verfügbar -->
+        <div id="inviteShareWrap" style="display:none; margin-top:8px;">
+          <button id="inviteShareBtn"
+            style="width:100%; padding:10px; border-radius:10px;
+                   border:1.5px solid var(--border); background:var(--card); color:var(--text);
+                   font-family:var(--sans); font-size:13px; font-weight:700;
+                   cursor:pointer;">
+            📤 Über App teilen (WhatsApp, etc.)
+          </button>
+        </div>
+      </div>
+
+      <button class="qr-close" id="qrCloseBtn">✕ Schließen</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  // Draw result canvas
+  buildResultCanvas(document.getElementById("resultCanvas"));
+
+  // Draw QR code pointing to game URL
+  QRGen.draw(qrText, document.getElementById("qrSmall"), 6);
+
+  // Copy button
+  document.getElementById("inviteCopyBtn").addEventListener("click", () => {
+    playClick();
+    const url = document.getElementById("inviteInput").value;
+    navigator.clipboard.writeText(url).then(() => {
+      document.getElementById("inviteCopied").style.display = "block";
+      document.getElementById("inviteCopyBtn").textContent = "✅ Kopiert!";
+      setTimeout(() => {
+        document.getElementById("inviteCopied").style.display = "none";
+        document.getElementById("inviteCopyBtn").textContent = "📋 Kopieren";
+      }, 3000);
+    }).catch(() => {
+      // Fallback: select input
+      document.getElementById("inviteInput").select();
+      document.execCommand("copy");
+      document.getElementById("inviteCopied").style.display = "block";
+    });
+  });
+
+  // Share API
+  if (navigator.share) {
+    document.getElementById("inviteShareWrap").style.display = "block";
+    document.getElementById("inviteShareBtn").addEventListener("click", () => {
+      playClick();
+      navigator.share({
+        title: "Dein Weg – Bildung & Chancen",
+        text: `Ich habe das Spiel gespielt und ${Math.round(out.score)}/85 Punkte erreicht! ${gymText}. Probier es selbst aus!`,
+        url: gameUrl
+      }).catch(() => {});
+    });
+  }
+
+  document.getElementById("qrCloseBtn").addEventListener("click", () => { playClick(); overlay.remove(); });
+}
+
+// ---------- Was wäre wenn: vollständige Spielsimulation ----------
+// Simuliert den ganzen Spielverlauf deterministisch mit den günstigsten
+// verfügbaren Entscheidungen – Geld wird nicht als laufender Wert,
+// sondern als Einkommens-Klasse (reich/mittel/arm) geführt.
+function simulateFullGame(overrides) {
+  const inc  = overrides.income          || state.profile.income          || "mittel";
+  const eb   = overrides.elternBildung   || state.profile.elternBildung   || "Berufsausbildung";
+  const lang = overrides.languageHome    || state.profile.languageHome    || "Deutsch";
+  const reg  = overrides.region          || state.profile.region          || "Mittelstadt";
+  const wohn = overrides.wohnlage        || state.profile.wohnlage        || "durchschnittliche Lage";
+  const eng  = overrides.elternEngagement || state.flags.elternEngagement || "mittel";
+
+  let bildung = 40, sprache = 50, sozial = 40, stress = 20;
+  let akademiker = false, foerderung = false, uebungAG = false, kenntLehrer = false;
+
+  const reich = inc === "hoch", mittel = inc === "mittel", arm = inc === "niedrig";
+
+  // Startwerte
+  if (lang === "Deutsch") sprache = 65;
+  else if (lang === "Deutsch & andere Sprache") sprache = 55;
+  else sprache = 38;
+
+  if (wohn === "gute Lage") { sozial += 8; stress -= 5; }
+  else if (wohn === "benachteiligte Lage") { sozial -= 7; stress += 7; }
+
+  if (eb === "Akademiker (Uni/FH)") { bildung += 12; sozial += 10; akademiker = true; }
+  else if (eb === "Berufsausbildung") { bildung += 4; sozial += 3; }
+  else { bildung -= 5; stress += 5; }
+
+  if (reg === "Großstadt" || reg === "Mittelstadt") foerderung = true;
+
+  // Klassenfahrt
+  if (reich || mittel) { sozial += 10; stress -= 3; }
+  else if (foerderung) { sozial += 6; stress += 2; }
+  else { sozial -= 8; stress += 5; }
+
+  // Hausaufgaben
+  if (eng === "hoch" && lang !== "vorwiegend andere Sprache") { bildung += 10; stress -= 3; }
+  else if (reich || mittel) { bildung += 12; stress -= 2; }
+  else if (eng !== "vernachlaessigt") { bildung += 6; stress += 2; }
+  else { bildung -= 4; stress += 8; }
+
+  // Deutsch-AG
+  if (eng !== "vernachlaessigt") { sprache += 10; bildung += 4; uebungAG = true; }
+
+  // Handy
+  if (arm && !foerderung) { stress += 5; sozial -= 4; }
+  else if (akademiker) { bildung += 4; stress -= 2; }
+  else { sozial += 2; }
+
+  // Essen
+  if (eng === "vernachlaessigt") { stress += 8; bildung -= 5; sozial -= 3; }
+  else if (arm) { bildung += 3; stress -= 2; }   // Bildungspaket
+  else { bildung += 2; stress -= 2; }
+
+  // Freizeit
+  if (reich) { sozial += 8; stress -= 5; bildung += 2; }
+  else if (reg !== "Ländlicher Raum") { sozial += 4; stress -= 2; }
+  else { sozial -= 3; stress += 3; }
+
+  // Schlaf
+  if (wohn === "gute Lage") { stress -= 8; bildung += 4; }
+  else if (arm || eng === "vernachlaessigt") { stress += 9; bildung -= 5; sozial -= 2; }
+  else { stress += 2; bildung += 1; }
+
+  // Arzt
+  if (reich || akademiker) { bildung += 6; stress -= 4; }
+  else if (mittel) { stress += 3; bildung += 1; }
+  else { stress += 7; bildung -= 8; }
+
+  // Übergang
+  if ((eng === "hoch" || eng === "mittel") && (reich || mittel)) {
+    sozial += 6; bildung += 3; kenntLehrer = true;
+  } else if (sprache >= 48) { sozial += 3; kenntLehrer = true; }
+  else { stress += 3; sozial -= 2; }
+
+  // Gymnasium-Chance
+  let gymChance = 0.15;
+  if (akademiker) gymChance += 0.28;
+  if (reich) gymChance += 0.12; else if (mittel) gymChance += 0.05;
+  if (bildung >= 65) gymChance += 0.14; else if (bildung >= 50) gymChance += 0.07;
+  if (kenntLehrer) gymChance += 0.08;
+  if (uebungAG) gymChance += 0.04;
+  if (sprache >= 60) gymChance += 0.05;
+  if (eng === "hoch") gymChance += 0.12;
+  else if (eng === "niedrig") gymChance -= 0.07;
+  else if (eng === "vernachlaessigt") gymChance -= 0.15;
+  if (wohn === "benachteiligte Lage") gymChance -= 0.05;
+  gymChance = Math.min(Math.max(gymChance, 0.04), 0.88);
+  const gymnasium = gymChance > 0.5;
+  if (gymnasium) { bildung += 6; sozial += 5; } else { stress += 5; }
+
+  // Sek I Digital
+  if (reich || mittel) { bildung += 8; stress -= 2; } else { bildung -= 2; stress += 7; }
+
+  // Praktikum
+  if (sozial >= 55 || akademiker) { sozial += 6; bildung += 4; stress -= 2; }
+  else { bildung += 2; stress += 3; }
+
+  // Konsum / Marken
+  if (reich) { sozial += 7; stress -= 4; }
+  else if (sozial >= 50) { bildung += 3; stress += 2; }
+  else { sozial -= 8; stress += 9; }
+
+  // Führerschein
+  if (reich) { sozial += 10; stress -= 6; }
+  else if (mittel) { sozial += 5; stress -= 3; }
+  else if (reg === "Ländlicher Raum") { stress += 8; sozial -= 5; }
+  else { stress += 3; sozial -= 2; }
+
+  // Zukunft
+  if (gymnasium && bildung >= 55) { bildung += 8; stress += 5; sozial += 4; }
+  else { bildung += 5; stress += 3; }
+
+  // Normalisieren
+  const cl = v => Math.max(0, Math.min(100, v));
+  bildung = cl(bildung); sprache = cl(sprache); sozial = cl(sozial); stress = cl(stress);
+  const geld = reich ? 72 : mittel ? 42 : 18;
+
+  const score = 0.40*bildung + 0.20*sprache + 0.15*sozial + 0.10*geld - 0.25*stress;
+  const maxScore = 85;
+  const pct = Math.round((Math.max(0, score) / maxScore) * 100);
+  return { score: Math.round(score), pct, maxScore, gymChance: Math.round(gymChance * 100) };
+}
+
+// ---------- Render-Erweiterungen ----------
+function renderProgressBarAndButtons() {
+  renderProgressBar();
+  // "Was wäre wenn" und "QR teilen" nur am Ende sichtbar
+  const isEnd = ["result","abschluss","reflection_questions","sek1_zukunft"].includes(state.currentScene);
+  el("btnWhatIf").style.display = isEnd ? "inline-flex" : "none";
+  el("btnQR").style.display = isEnd ? "inline-flex" : "none";
+}
+
+// ---------- Anleitung / How to Play ----------
+function showHelp() {
+  const existing = document.getElementById("helpOverlay");
+  if (existing) { existing.remove(); return; }
+
+  const overlay = document.createElement("div");
+  overlay.className = "help-overlay";
+  overlay.id = "helpOverlay";
+  overlay.innerHTML = `
+    <div class="help-card">
+      <h3>❓ So funktioniert das Spiel</h3>
+      <div class="help-sub">Ein Planspiel über Bildung und soziale Gerechtigkeit in Deutschland – für den Einsatz im Unterricht.</div>
+
+      <div class="help-section">
+        <h4>🎯 Was ist das Ziel?</h4>
+        <p>Du schlüpfst in die Rolle eines Kindes mit einem <b>zufällig bestimmten Startprofil</b> – genau wie im echten Leben. Du triffst Entscheidungen und erlebst, wie Herkunft, Einkommen und Umfeld deinen Bildungsweg beeinflussen.</p>
+        <p>Am Ende siehst du deinen Score und kannst mit Mitschüler:innen vergleichen: Warum haben manche bessere Chancen – obwohl sie sich genauso bemühen?</p>
+      </div>
+
+      <div class="help-section">
+        <h4>📊 Deine vier Werte</h4>
+        <div class="help-stat-row">
+          <div class="help-stat"><span class="hs-icon">📚</span><span class="hs-name">Bildung</span><span class="hs-desc">Wissen & Schulleistung</span></div>
+          <div class="help-stat"><span class="hs-icon">🗣️</span><span class="hs-name">Sprache</span><span class="hs-desc">Deutsch­kenntnisse</span></div>
+          <div class="help-stat"><span class="hs-icon">🤝</span><span class="hs-name">Sozial</span><span class="hs-desc">Kontakte & Netzwerk</span></div>
+          <div class="help-stat"><span class="hs-icon">😰</span><span class="hs-name">Stress</span><span class="hs-desc">Belastung (weniger = besser)</span></div>
+        </div>
+      </div>
+
+      <div class="help-section">
+        <h4>🔒 Gesperrte Optionen</h4>
+        <p>Manche Entscheidungen sind für dein Profil <b>gesperrt</b> – weil das Geld fehlt, die Sprache nicht reicht oder die Eltern nicht helfen können. Das ist kein Fehler, das ist die Realität.</p>
+        <p>Nur wer die Voraussetzungen erfüllt, kann die Chance nutzen.</p>
+      </div>
+
+      <div class="help-section">
+        <h4>⚡ Automatische Szenen</h4>
+        <p>Manche Szenen (z. B. Mittagessen, Zimmer, Handy) haben <b>keine Wahlmöglichkeit</b>. Das Ergebnis ergibt sich aus deinem Profil – denn nicht alle Kinder können wählen.</p>
+      </div>
+
+      <div class="help-section">
+        <h4>🎲 Zufallsereignisse</h4>
+        <p>Manchmal passieren unvorhergesehene Dinge – Krankheit, Umzug, Stipendium. Das Leben ist kein vorhersehbarer Pfad.</p>
+      </div>
+
+      <div class="help-section">
+        <h4>🏁 Am Ende</h4>
+        <p>Du erhältst einen <b>Score von 0–85 Punkten</b> und kannst mit dem <b>🔮 Was-wäre-wenn-Modus</b> simulieren, was bei besseren oder schlechteren Startbedingungen passiert wäre.</p>
+        <p>Mit <b>📲 Ergebnis teilen</b> kannst du eine Ergebniskarte erstellen und sie in der Klasse zeigen.</p>
+      </div>
+
+      <button class="help-close" id="helpCloseBtn">✓ Verstanden – los geht's!</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById("helpCloseBtn").addEventListener("click", () => { playClick(); overlay.remove(); });
+}
+
+// ---------- Wire up buttons ----------
+document.getElementById("btnNew").addEventListener("click", () => {
+  playClick();
+  state = rollStartState();
+  saveLocal();
+  showProfileCard();
+});
+document.getElementById("btnReset").addEventListener("click", () => { playClick(); resetAll(); });
+document.getElementById("btnTheme").addEventListener("click", () => {
+  isLightMode = !isLightMode;
+  localStorage.setItem("planspiel_theme", isLightMode ? "light" : "dark");
+  applyTheme();
+  playClick();
+});
+document.getElementById("btnHelp").addEventListener("click", () => { playClick(); showHelp(); });
+document.getElementById("btnWhatIf").addEventListener("click", () => { playClick(); showWhatIf(); });
+document.getElementById("btnQR").addEventListener("click", () => { playClick(); showQR(); });
+
+// ---------- Init ----------
+applyTheme();
+state = loadLocal() || rollStartState();
+if (!SCENES[state.currentScene]) state.currentScene = "intro";
+render();
+// Beim allerersten Start Profilkarte zeigen
+if (state.currentScene === "intro" && !state.log.find(l => l.title !== "Spielstart")) {
+  showProfileCard();
+}
+</script>
+</body>
+</html>
+
+</body>
+</html>
